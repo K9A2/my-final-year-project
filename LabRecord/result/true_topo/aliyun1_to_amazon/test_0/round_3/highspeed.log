@@ -1,0 +1,30 @@
+{
+	"start":	{
+		"connected":	[{
+				"socket":	5,
+				"local_host":	"172.31.40.100",
+				"local_port":	58442,
+				"remote_host":	"47.94.86.152",
+				"remote_port":	80
+			}],
+		"version":	"iperf 3-CURRENT",
+		"system_info":	"Linux ip-172-31-40-100 4.12.0-041200-generic #201707022031 SMP Mon Jul 3 00:32:52 UTC 2017 x86_64",
+		"timestamp":	{
+			"time":	"Wed, 16 Aug 2017 20:03:21 GMT",
+			"timesecs":	1502913801
+		},
+		"connecting_to":	{
+			"host":	"47.94.86.152",
+			"port":	80
+		},
+		"cookie":	"7g3y7eplksnb6irdnmnziavjuwymd7kb7mqp",
+		"tcp_mss_default":	1448,
+		"sock_bufsize":	0,
+		"sndbuf_actual":	16384,
+		"rcvbuf_actual":	87380
+	},
+	"intervals":	[],
+	"end":	{
+	},
+	"error":	"error - control socket has closed unexpectedly"
+}
