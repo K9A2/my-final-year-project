@@ -69,8 +69,9 @@ def main():
     round_name = ["round_0/", "round_1/", "round_2/", "round_3/", "round_4/", "round_5/"]
     benchmark_name = "benchmark/benchmark.log"
 
-    colors = ["#70AD47", "#4472C4", "#FFC000", "#ED7D31", "#7030A0", "#002060",
-              "#92D050", "#FF0000", "#C00000", "#833C0B", "#BF9000", "#A8D08D"]
+    markers = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s"]
+    colors = ["black", "red", "peru", "darkorange", "gold", "yellowgreen",
+              "deeppink", "darkviolet", "slateblue", "deepskyblue", "mediumturquoise", "lime"]
 
     scenarios = ["aliyun1_to_amazon/", "dc1_to_lan/", "dc2_to_aliyun2/"]
 
@@ -86,49 +87,65 @@ def main():
         dictionary = {"rtt": rtt, "bw": bw}
         result[algorithm] = dictionary
 
+    # load benchmark
+    benchmark_path = file_path + scenario + "benchmark/benchmark.log"
+    benchmark_json = json.loads("".join(read_text_file(benchmark_path)))
+    rtt = []
+    bw = []
+    for i in range(len(benchmark_json["intervals"])):
+        rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000)
+        bw.append(benchmark_json["intervals"][i]["streams"][0]["bits_per_second"] / (1024 * 1024))
+
+    benchmark = {"rtt": np.average(rtt), "bw": np.average(bw)}
+
+    print "rtt: " + str(benchmark["rtt"])
+    print "bw: " + str(benchmark["bw"])
+
     # data
-    for test in tests:
+    for t in tests:
         for algorithm in algorithms:
             for r in round_name:
-                file_name = file_path + scenario + test + r + algorithm + ".log"
+                file_name = file_path + scenario + t + r + algorithm + ".log"
                 json_object = json.loads("".join(read_text_file(file_name)))
                 intervals = json_object["intervals"]
                 for i in range(0, len(intervals)):
                     result[algorithm]["rtt"].append(intervals[i]["streams"][0]["rtt"] / 1000.0)
                     result[algorithm]["bw"].append(intervals[i]["streams"][0]["bits_per_second"] / (1024.0 * 1024.0))
 
-    for val in sorted(result[algorithms[1]]["rtt"]):
-        print val
-
-    # Create some test data
-    dx = 1
+    # plot rtt in fig 1
+    fig_rtt = plt.figure("rtt")
     for i in range(len(algorithms)):
 
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
 
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
 
-        plt.plot(sorted_data, yvals, linewidth=2, label=names[i])
-        """
-        X = np.array(sorted(result[algorithms[i]]["rtt"]))
-        Y = exp((-X) ** 2)
-
-        # Normalize the data to a proper PDF
-        Y /= (dx * Y).sum()
-
-        # Compute the CDF
-        CY = np.cumsum(Y * dx)
-
-        # Plot both
-        # plot(X, Y)
-        plt.plot(X, CY, color=colors[i], label=algorithms[i], linewidth=2)
-        """
-
+        plt.plot(sorted_data, yvals, linewidth=2, label=names[i], color=colors[i])
+    # plot benchmark line
+    plt.axvline(benchmark["rtt"], linewidth=3, color="black")
     plt.xlabel("RTT(ms)", fontsize=32)
     plt.xticks(fontsize=32)
     plt.ylabel("Cumulative Distribution", fontsize=32)
     plt.yticks(fontsize=32)
-    plt.ylim(0, 1.2)
+    plt.ylim(-0.2, 1.2)
+    plt.legend(fontsize=32, numpoints=100)
+
+    # plot bandwidth in fig 2
+    fig_bw = plt.figure("bandwidth")
+    for i in range(len(algorithms)):
+
+        sorted_data = np.sort(result[algorithms[i]]["bw"])
+
+        yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
+
+        plt.plot(sorted_data, yvals, linewidth=2, label=names[i], color=colors[i])
+    # plot benchmark line
+    plt.axvline(benchmark["bw"], linewidth=3, color="black")
+    plt.xlabel("Throughput(Mbits/s)", fontsize=32)
+    plt.xticks(fontsize=32)
+    plt.ylabel("Cumulative Distribution", fontsize=32)
+    plt.yticks(fontsize=32)
+    plt.ylim(-0.2, 1.2)
     plt.legend(fontsize=32, numpoints=100)
 
     plt.show()
