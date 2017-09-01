@@ -255,7 +255,7 @@ def process(path, exp_name, con_name, out_index, out_exp, out_con):
 def auto_label(ups, downs, labels, figure):
     for i in range(len(ups)):
         height = ups[i].get_height() + downs[i].get_height()
-        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 150, "%1.2f" % labels[i],
+        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 250, "%1.2f" % labels[i],
                  ha="center",
                  rotation=90,
                  fontsize=28)
@@ -334,17 +334,17 @@ def main():
 
     exp_reno = plt.bar(x + 0 * width - 1.2, vs_reno_exp,
                        width=width,
-                       label='Itself',
+                       label='Testee',
                        alpha=0.5,
                        color="red")
     exp_cubic = plt.bar(x + 1 * width - 1.2, vs_cubic_exp,
                         width=width,
-                        label='Itself',
+                        label='Testee',
                         alpha=0.5,
                         color="blue")
     exp_itself = plt.bar(x + 2 * width - 1.2, vs_itself_exp,
                          width=width,
-                         label='Itself',
+                         label='Testee',
                          alpha=0.5,
                          color="black")
     # Con
@@ -356,12 +356,12 @@ def main():
     con_cubic = plt.bar(x + 1 * width - 1.2, vs_cubic_con, bottom=vs_cubic_exp, width=width,
                         label='CUBIC',
                         alpha=0.5,
-                        color="green")
+                        color="lawngreen")
     auto_label(con_cubic, exp_cubic, index_cubic, fig)
     con_itself = plt.bar(x + 2 * width - 1.2, vs_itself_con, bottom=vs_itself_exp, width=width,
                          label='Itself',
                          alpha=0.5,
-                         color="navy")
+                         color="dodgerblue")
     auto_label(con_itself, exp_itself, index_itself, fig)
 
     # Index
@@ -379,9 +379,11 @@ def main():
 """
     plt.xticks(x + 1.5 * width - 1.2, ["BBR", "Scalable", "BIC", "High Speed", "H-TCP", "Hybla", "Illinois",
                                        "Vegas", "YeAH"], fontsize=32, rotation="45")
-    plt.ylabel("Transferred Data(MB)", fontsize=32)
+    plt.ylabel("Transferred Data in 300 seconds(MB)", fontsize=32)
     plt.yticks(fontsize=32)
-    plt.ylim(0, numpy.max(data) * 1.2)
+    plt.ylim(0, numpy.max(data) * 1.8)
+
+    plt.legend(fontsize=24)
 
     plt.show()
 
