@@ -44,8 +44,11 @@ def main():
     file_path = "./LabRecord/result/curl/"
     file_names = ["curl_lan.csv", "curl_di.csv", "curl_ii.csv"]
 
-    colors = ["#70AD47", "#4472C4", "#FFC000", "#ED7D31", "#7030A0", "#002060",
-              "#92D050", "#FF0000", "#C00000", "#833C0B", "#BF9000", "#A8D08D"]
+    colors = ["orange", "dodgerblue", "dodgerblue", "dodgerblue", "dodgerblue", "lightseagreen", "lightseagreen", "dodgerblue",
+              "dodgerblue", "dodgerblue", "dodgerblue", "dodgerblue"]
+
+    # colors = ["#70AD47", "#4472C4", "#FFC000", "#ED7D31", "#7030A0", "#002060",
+    #          "#92D050", "#FF0000", "#C00000", "#833C0B", "#BF9000", "#A8D08D"]
     algorithms = ["cubic", "westwood", "bbr", "scalable", "bic", "highspeed", "htcp", "hybla", "illinois", "vegas",
                   "yeah", "reno"]
 
@@ -56,6 +59,10 @@ def main():
     for file_name in file_names:
         result[file_name] = get_result_dictionary(read_text_file(file_path + file_name), names)
 
+    # print variance
+    for name in names:
+        print ("%10s  %3.5f" % (name, numpy.median(result["curl_ii.csv"][name])))
+
     df = pd.DataFrame(result["curl_ii.csv"])
 
     # draw box charts
@@ -64,12 +71,14 @@ def main():
     plt.yticks(fontsize=32)
     plt.ylabel("Average Download Speed(MB\s)", fontsize=32)
 
+    i = 0
     f = df.boxplot(sym='r*', patch_artist=True)
     for box in f['boxes']:
         # 箱体边框颜色
         box.set(color='black', linewidth=2)
         # 箱体内部填充颜色
-        box.set(facecolor='white')
+        box.set(facecolor=colors[i])
+        i += 1
     for whisker in f['whiskers']:
         whisker.set(color='r', linewidth=2)
     for cap in f['caps']:

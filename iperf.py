@@ -112,6 +112,26 @@ def main():
                     result[algorithm]["rtt"].append(intervals[i]["streams"][0]["rtt"] / 1000.0)
                     result[algorithm]["bw"].append(intervals[i]["streams"][0]["bits_per_second"] / (1024.0 * 1024.0))
 
+    # print average throughput
+    avg_rtt = []
+    avg_bw = []
+    for algorithm in algorithms:
+        print algorithm
+        print np.average(result[algorithm]["rtt"])
+        print np.average(result[algorithm]["bw"])
+        avg_rtt.append(np.average(result[algorithm]["rtt"]))
+        avg_bw.append(np.average(result[algorithm]["bw"]))
+    print "max rtt"
+    print np.max(avg_rtt)
+    print "min rtt"
+    print np.min(avg_rtt)
+    print "max bw"
+    print np.max(avg_bw)
+    print "min bw"
+    print np.min(avg_bw)
+
+    # print average rtt
+
     # plot rtt in fig 1
     fig_rtt = plt.figure("rtt")
     for i in range(len(algorithms)):
@@ -127,8 +147,7 @@ def main():
     plt.xticks(fontsize=32)
     plt.ylabel("Cumulative Distribution", fontsize=32)
     plt.yticks(fontsize=32)
-    plt.ylim(-0.2, 1.2)
-    plt.legend(fontsize=32, numpoints=100)
+    plt.legend(fontsize=32, numpoints=100, loc='lower right')
 
     # plot bandwidth in fig 2
     fig_bw = plt.figure("bandwidth")
@@ -145,8 +164,7 @@ def main():
     plt.xticks(fontsize=32)
     plt.ylabel("Cumulative Distribution", fontsize=32)
     plt.yticks(fontsize=32)
-    plt.ylim(-0.2, 1.2)
-    plt.legend(fontsize=32, numpoints=100)
+    plt.legend(fontsize=32, numpoints=100, loc='lower right')
 
     plt.show()
 
