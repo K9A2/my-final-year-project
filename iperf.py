@@ -73,11 +73,13 @@ def main():
     colors = ["black", "red", "peru", "darkorange", "gold", "yellowgreen",
               "deeppink", "darkviolet", "slateblue", "deepskyblue", "mediumturquoise", "lime"]
 
-    scenarios = ["aliyun1_to_amazon/", "dc1_to_lan/", "dc2_to_aliyun2/"]
+    scenarios = ["dc1_to_lan/", "dc2_to_aliyun2/", "aliyun1_to_amazon/"]
 
     tests = ["test_0/", "test_1/"]
 
-    scenario = scenarios[0]
+    scenario = scenarios[2]
+
+    fsize = 52
 
     result = {}
 
@@ -140,14 +142,15 @@ def main():
 
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
 
-        plt.plot(sorted_data, yvals, linewidth=2, label=names[i], color=colors[i])
+        plt.plot(sorted_data, yvals, linewidth=4, label=names[i], color=colors[i])
     # plot benchmark line
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
-    plt.xlabel("RTT(ms)", fontsize=32)
-    plt.xticks(fontsize=32)
-    plt.ylabel("Cumulative Distribution", fontsize=32)
-    plt.yticks(fontsize=32)
-    plt.legend(fontsize=32, numpoints=100, loc='lower right')
+    plt.xlabel("RTT(ms)", fontsize=fsize)
+    plt.xticks(fontsize=fsize)
+    plt.xlim(220, 350)
+    plt.ylabel("Cumulative Distribution", fontsize=fsize)
+    plt.yticks(fontsize=fsize)
+    plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
     # plot bandwidth in fig 2
     fig_bw = plt.figure("bandwidth")
@@ -157,14 +160,15 @@ def main():
 
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
 
-        plt.plot(sorted_data, yvals, linewidth=2, label=names[i], color=colors[i])
+        plt.plot(sorted_data, yvals, linewidth=4, label=names[i], color=colors[i])
     # plot benchmark line
     plt.axvline(benchmark["bw"], linewidth=3, color="black")
-    plt.xlabel("Throughput(Mbits/s)", fontsize=32)
-    plt.xticks(fontsize=32)
-    plt.ylabel("Cumulative Distribution", fontsize=32)
-    plt.yticks(fontsize=32)
-    plt.legend(fontsize=32, numpoints=100, loc='lower right')
+    plt.xlabel("Throughput(Mbits/s)", fontsize=fsize)
+    plt.xticks(fontsize=fsize)
+    # plt.xlim(0, 3)
+    plt.ylabel("Cumulative Distribution", fontsize=fsize)
+    plt.yticks(fontsize=fsize)
+    plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
     plt.show()
 

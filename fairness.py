@@ -9,6 +9,7 @@ import json
 import re
 import matplotlib.pyplot as plt
 import numpy
+import itertools
 
 
 def read_text_file(file_name):
@@ -255,18 +256,24 @@ def process(path, exp_name, con_name, out_index, out_exp, out_con):
 def auto_label(ups, downs, labels, figure):
     for i in range(len(ups)):
         height = ups[i].get_height() + downs[i].get_height()
-        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 250, "%1.2f" % labels[i],
+        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 300, "%1.2f" % labels[i],
                  ha="center",
                  rotation=90,
-                 fontsize=28)
+                 fontsize=35)
         i += 1
+
+
+def flip(items, ncol):
+    return itertools.chain(*[items[i::ncol] for i in range(ncol)])
 
 
 def main():
     """
     Main Function, nothing to comment
     """
-    scenario = "lan"
+    scenario = "international"
+    fsize = 52
+    label_size = 35
 
     file_name_base = "./LabRecord/result/fairness"
 
@@ -378,12 +385,16 @@ def main():
     plt.text(con_itself.get_x() + con_itself.get_width() / 2.0, 1.03 * con_itself.get_height(), index_itself)
 """
     plt.xticks(x + 1.5 * width - 1.2, ["BBR", "Scalable", "BIC", "High Speed", "H-TCP", "Hybla", "Illinois",
-                                       "Vegas", "YeAH"], fontsize=32, rotation="45")
-    plt.ylabel("Transferred Data in 300 seconds(MB)", fontsize=32)
-    plt.yticks(fontsize=32)
+                                       "Vegas", "YeAH"], fontsize=fsize, rotation="45")
+    plt.ylabel("Transferred Data(MB)", fontsize=fsize)
+    plt.yticks(fontsize=fsize)
     plt.ylim(0, numpy.max(data) * 1.8)
 
-    plt.legend(fontsize=24)
+    ax = plt.subplot(111)
+    handles, labels = ax.get_legend_handles_labels()
+    handles.reverse()
+    labels.reverse()
+    plt.legend(flip(handles, 3), flip(labels, 3), loc=9, ncol=3, fontsize=label_size)
 
     plt.show()
 
