@@ -58,6 +58,13 @@ def get_result_dictionary(intervals, keys):
     return result
 
 
+def sort_by_value(d):
+    items = d.items()
+    back_items = [[v[1], v[0]] for v in items]
+    back_items.sort()
+    return [back_items[i][1] for i in range(0, len(back_items))]
+
+
 def main():
     """
     Main Function, nothing to comment
@@ -77,7 +84,7 @@ def main():
 
     tests = ["test_0/", "test_1/"]
 
-    scenario = scenarios[2]
+    scenario = scenarios[0]
 
     fsize = 52
 
@@ -117,12 +124,21 @@ def main():
     # print average throughput
     avg_rtt = []
     avg_bw = []
+    kv_rtt = {}
+    kv_bw = {}
     for algorithm in algorithms:
         print algorithm
-        print np.average(result[algorithm]["rtt"])
-        print np.average(result[algorithm]["bw"])
         avg_rtt.append(np.average(result[algorithm]["rtt"]))
         avg_bw.append(np.average(result[algorithm]["bw"]))
+        kv_rtt[algorithm] = np.average(result[algorithm]["rtt"])
+        kv_bw[algorithm] = np.average(result[algorithm]["bw"])
+
+    print "sorted rtt"
+    print sorted(kv_rtt.items(), key=lambda item: item[1])
+
+    print "sorted bw"
+    print sorted(kv_bw.items(), key=lambda item: item[1])
+
     print "max rtt"
     print np.max(avg_rtt)
     print "min rtt"
@@ -137,7 +153,6 @@ def main():
     # plot rtt in fig 1
     fig_rtt = plt.figure("rtt")
     for i in range(len(algorithms)):
-
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
 
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
@@ -155,7 +170,6 @@ def main():
     # plot bandwidth in fig 2
     fig_bw = plt.figure("bandwidth")
     for i in range(len(algorithms)):
-
         sorted_data = np.sort(result[algorithms[i]]["bw"])
 
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)

@@ -256,7 +256,7 @@ def process(path, exp_name, con_name, out_index, out_exp, out_con):
 def auto_label(ups, downs, labels, figure):
     for i in range(len(ups)):
         height = ups[i].get_height() + downs[i].get_height()
-        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 300, "%1.2f" % labels[i],
+        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 400, "%1.2f" % labels[i],
                  ha="center",
                  rotation=90,
                  fontsize=35)
@@ -271,7 +271,7 @@ def main():
     """
     Main Function, nothing to comment
     """
-    scenario = "international"
+    scenario = "domestic"
     fsize = 52
     label_size = 35
 
@@ -388,13 +388,13 @@ def main():
                                        "Vegas", "YeAH"], fontsize=fsize, rotation="45")
     plt.ylabel("Transferred Data(MB)", fontsize=fsize)
     plt.yticks(fontsize=fsize)
-    plt.ylim(0, numpy.max(data) * 1.8)
+    plt.ylim(0, numpy.max(data) * 2.2)
 
     ax = plt.subplot(111)
     handles, labels = ax.get_legend_handles_labels()
     handles.reverse()
     labels.reverse()
-    plt.legend(flip(handles, 3), flip(labels, 3), loc=9, ncol=3, fontsize=label_size)
+    plt.legend(flip(handles, 3), flip(labels, 3), loc="upper left", ncol=3, fontsize=label_size)
 
     plt.show()
 
