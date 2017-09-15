@@ -84,7 +84,7 @@ def main():
 
     tests = ["test_0/", "test_1/"]
 
-    scenario = scenarios[0]
+    scenario = scenarios[1]
 
     fsize = 52
 
@@ -162,7 +162,7 @@ def main():
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
     plt.xlabel("RTT(ms)", fontsize=fsize)
     plt.xticks(fontsize=fsize)
-    plt.xlim(220, 350)
+    # plt.xlim(220, 350)
     plt.ylabel("Cumulative Distribution", fontsize=fsize)
     plt.yticks(fontsize=fsize)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')

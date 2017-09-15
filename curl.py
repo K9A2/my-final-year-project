@@ -55,7 +55,7 @@ def main():
     names = ["CUBIC", "Westwood", "BBR", "Scalable", "BIC", "High Speed", "H-TCP", "Hybla", "Illinois", "Vegas",
              "YeAH", "Reno"]
 
-    scenario = file_names[0]
+    scenario = file_names[1]
     fsize = 52
     label_size = 35
 
@@ -74,7 +74,7 @@ def main():
     # plt.boxplot(x=df.values, labels=df.columns, whis=1.5)
 
     plt.yticks(fontsize=fsize)
-    plt.ylabel("Average DS (MB\s)", fontsize=fsize)
+    plt.ylabel("Throughput (MB\s)", fontsize=fsize)
 
     i = 0
     f = df.boxplot(sym='r*', patch_artist=True)
@@ -93,6 +93,7 @@ def main():
     for flier in f['fliers']:
         flier.set(marker='.', color='#000', alpha=0.5)
     plt.xticks(fontsize=fsize, rotation=45)
+    # plt.ylim(10, 11.5)
     plt.show()
 
     return
