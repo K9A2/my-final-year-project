@@ -76,7 +76,7 @@ def main():
     fsize = 52
     label_size = 35
 
-    file_name_base = "../LabRecord/result/fairness"
+    file_name_base = "../lab-record/result/fairness"
 
     algorithms = ["bbr", "scalable", "bic", "highspeed", "htcp", "hybla",
                   "illinois", "vegas", "yeah"]

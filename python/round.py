@@ -150,7 +150,7 @@ def main():
 
     algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed",
                   "htcp", "hybla", "illinois", "vegas", "yeah", "reno"]
-    file_path = "../LabRecord/result/true_topo/dc1_to_lan/test_1/round_5/"
+    file_path = "../lab-record/result/true_topo/dc1_to_lan/test_1/round_5/"
 
     #   Load and parse json object from file with specific
     json_object = {}
