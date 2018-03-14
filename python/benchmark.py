@@ -215,8 +215,8 @@ def main():
     Main Function, nothing to comment
     """
     #   Load and parse json object from file with specific
-    file_name = "../LabRecord/result/true_topo/aliyun1_to_amazon/benchmark/\
-    benchmark.log"
+    file_name = "../LabRecord/result/true_topo/aliyun1_to_amazon/benchmark/" \
+        "benchmark.log"
     doc = re.sub("[\n|\t]", "", "".join(read_text_file(file_name)))
     json_object = json.loads("".join(doc))
 

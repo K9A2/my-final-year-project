@@ -76,7 +76,7 @@ def main():
     fsize = 52
     label_size = 35
 
-    file_name_base = "./LabRecord/result/fairness"
+    file_name_base = "../LabRecord/result/fairness"
 
     algorithms = ["bbr", "scalable", "bic", "highspeed", "htcp", "hybla",
                   "illinois", "vegas", "yeah"]
@@ -93,7 +93,7 @@ def main():
 
     vs_itself_exp = []
     vs_itself_con = []
-
+    
     index_reno = []
     index_cubic = []
     index_itself = []
@@ -102,8 +102,8 @@ def main():
 
     for algorithm in algorithms:
         for test in test_types:
-            path_base = file_name_base + "/" + scenario + "/" + test + "/" +
-            algorithm + "/"
+            path_base = file_name_base + "/" + scenario + "/" + test + "/" + \
+                algorithm + "/"
             if test == "vs_itself":
                 exp_name = names[algorithms.index(algorithm)] + "_1"
                 con_name = names[algorithms.index(algorithm)] + "_2"

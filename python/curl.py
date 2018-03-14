@@ -41,7 +41,7 @@ def main():
     Main Function, nothing to comment
     """
 
-    file_path = "./LabRecord/result/curl/"
+    file_path = "../LabRecord/result/curl/"
     file_names = ["curl_lan.csv", "curl_di.csv", "curl_ii.csv"]
 
     colors = ["orange", "orange", "orange", "orange", "orange", "orange",

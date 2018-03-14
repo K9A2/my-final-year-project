@@ -82,7 +82,7 @@ def main():
                   "hybla", "illinois", "vegas", "yeah", "reno"]
     names = ["BBR", "Scalable", "BIC", "CUBIC", "High Speed", "H-TCP", "Hybla",
              "Illinois", "Vegas", "YeAH", "Reno"]
-    file_path = "./LabRecord/result/true_topo/"
+    file_path = "../LabRecord/result/true_topo/"
     # round_name = ["round_0/", "round_1/", "round_2/", "round_3/", "round_4/",
     # "round_5/"]
     round_name = ["round_0/"]
