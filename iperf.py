@@ -84,7 +84,11 @@ def main():
 
     tests = ["test_0/", "test_1/"]
 
+<<<<<<< HEAD
     scenario = scenarios[2]
+=======
+    scenario = scenarios[1]
+>>>>>>> 98dc9647062318a466ee8683b21e26208f7c81c7
 
     fsize = 52
 
@@ -162,8 +166,13 @@ def main():
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
     plt.xlabel("RTT(ms)", fontsize=fsize)
     plt.xticks(fontsize=fsize)
+<<<<<<< HEAD
     plt.xlim(220, 350)
     plt.ylabel("CDF", fontsize=fsize)
+=======
+    # plt.xlim(220, 350)
+    plt.ylabel("Cumulative Distribution", fontsize=fsize)
+>>>>>>> 98dc9647062318a466ee8683b21e26208f7c81c7
     plt.yticks(fontsize=fsize)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
     plt.subplots_adjust(left=0.09, right=0.97, top=0.96, bottom=0.13)

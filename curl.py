@@ -56,7 +56,11 @@ def main():
     names = ["CUBIC", "Westwood", "BBR", "Scalable", "BIC", "High Speed", "H-TCP", "Hybla", "Illinois", "Vegas",
              "YeAH", "Reno"]
 
+<<<<<<< HEAD
     scenario = file_names[2]
+=======
+    scenario = file_names[1]
+>>>>>>> 98dc9647062318a466ee8683b21e26208f7c81c7
     fsize = 52
     label_size = 35
 
@@ -95,7 +99,10 @@ def main():
         flier.set(marker='.', color='red', alpha=0.8, markersize=40)
     plt.xticks(fontsize=fsize, rotation=45)
     # plt.ylim(10, 11.5)
+<<<<<<< HEAD
     plt.subplots_adjust(left=0.09, right=0.99, top=0.97, bottom=0.27)
+=======
+>>>>>>> 98dc9647062318a466ee8683b21e26208f7c81c7
     plt.show()
 
     return

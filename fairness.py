@@ -168,7 +168,11 @@ def main():
                                        "Vegas", "YeAH"], fontsize=fsize, rotation="45")
     plt.ylabel("Transferred Data(MB)", fontsize=fsize)
     plt.yticks(fontsize=fsize)
+<<<<<<< HEAD
     plt.ylim(0, numpy.max(data) * 1.3   )
+=======
+    plt.ylim(0, numpy.max(data) * 1.5)
+>>>>>>> 98dc9647062318a466ee8683b21e26208f7c81c7
 
     ax = plt.subplot(111)
     handles, labels = ax.get_legend_handles_labels()
@@ -176,8 +180,11 @@ def main():
     # labels.reverse()
     plt.legend(flip(handles, 3), flip(labels, 3), loc="upper left", ncol=3, fontsize=label_size)
 
+<<<<<<< HEAD
     plt.subplots_adjust(left=0.125, right=0.99, top=0.99, bottom=0.27)
 
+=======
+>>>>>>> 98dc9647062318a466ee8683b21e26208f7c81c7
     plt.show()
 
 
