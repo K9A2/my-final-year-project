@@ -92,7 +92,7 @@ def main():
     # tests = ["test_0/", "test_1/"]
     tests = ["test_0/"]
 
-    scenario = scenarios[1]
+    scenario = scenarios[2]
 
     fsize = 52
 
@@ -112,27 +112,34 @@ def main():
                 for i in range(0, len(intervals)):
                     result[algorithm].append(intervals[i]["streams"][0]["bits_per_second"] / (1024.0 * 1024.0))
 
+    max_value = []
     for algorithm in algorithms:
         for i in range(1, 21):
             temp = []
             for j in range(0, 30):
                 temp.append(result[algorithm][i - j])
             avg[algorithm].append(np.average(temp))
+            max_value.append(np.max(temp))
 
-    # plot bandwidth in fig 2
+    # plot
     time = []
     for i in range(0, 20):
         time.append((i + 1) * 30)
 
     for i in range(len(algorithms)):
-        plt.plot(time, avg[algorithms[i]], linewidth=3, label=names[i], color=colors[i], marker=markers[i])
+        plt.plot(time, avg[algorithms[i]], linewidth=3, label=names[i], color=colors[i], marker=markers[i],
+                 markersize=20)
 
+    plt.tight_layout(pad=3)
     plt.xlabel("Time(s)", fontsize=fsize)
+
+    plt.ylabel("Throughput(Mbps)", fontsize=fsize)
+
     plt.xticks(fontsize=fsize)
     # plt.xlim(0, 3)
-    plt.ylabel("Throughput(Mbps)", fontsize=fsize)
+
     plt.yticks(fontsize=fsize)
-    plt.ylim(1.05, 1.2)
+    plt.ylim(0, 1.05 * np.max(max_value))
 
     ax = plt.subplot(111)
     handles, labels = ax.get_legend_handles_labels()

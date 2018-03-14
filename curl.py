@@ -21,7 +21,7 @@ def get_result_dictionary(csv, names):
     for i in range(1, len(csv)):
         # load data for all algorithms
         for j in range(len(csv[i])):
-            data[names[j]].append(float(csv[i][j]))
+            data[names[j]].append(float(csv[i][j]) / 1024)
 
     return data
 
@@ -44,8 +44,9 @@ def main():
     file_path = "./LabRecord/result/curl/"
     file_names = ["curl_lan.csv", "curl_di.csv", "curl_ii.csv"]
 
-    colors = ["orange", "orange", "orange", "orange", "orange", "orange", "orange",
-              "orange", "orange", "orange", "orange", "orange"]
+    colors = ["orange", "dodgerblue", "dodgerblue", "dodgerblue", "dodgerblue", "darkcyan", "darkcyan",
+              "dodgerblue", "dodgerblue", "dodgerblue", "dodgerblue", "dodgerblue"]
+    markers = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s"]
 
     # colors = ["#70AD47", "#4472C4", "#FFC000", "#ED7D31", "#7030A0", "#002060",
     #          "#92D050", "#FF0000", "#C00000", "#833C0B", "#BF9000", "#A8D08D"]
@@ -55,7 +56,7 @@ def main():
     names = ["CUBIC", "Westwood", "BBR", "Scalable", "BIC", "High Speed", "H-TCP", "Hybla", "Illinois", "Vegas",
              "YeAH", "Reno"]
 
-    scenario = file_names[1]
+    scenario = file_names[2]
     fsize = 52
     label_size = 35
 
@@ -91,9 +92,10 @@ def main():
     for median in f['medians']:
         median.set(color='red', linewidth=3)
     for flier in f['fliers']:
-        flier.set(marker='.', color='#000', alpha=0.5)
+        flier.set(marker='.', color='red', alpha=0.8, markersize=40)
     plt.xticks(fontsize=fsize, rotation=45)
     # plt.ylim(10, 11.5)
+    plt.subplots_adjust(left=0.09, right=0.99, top=0.97, bottom=0.27)
     plt.show()
 
     return
