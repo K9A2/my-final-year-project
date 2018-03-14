@@ -94,7 +94,7 @@ def main():
     for median in f['medians']:
         median.set(color='red', linewidth=3)
     for flier in f['fliers']:
-        flier.set(marker='.', color='#000', alpha=0.5)
+        flier.set(marker='.', markerfacecolor='r', markersize=40)
     plt.xticks(fontsize=fsize, rotation=45)
     # plt.ylim(10, 11.5)
     plt.show()
