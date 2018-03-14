@@ -53,7 +53,8 @@ def get_result_dictionary(intervals, keys):
         for j in range(len(intervals[i]['streams'])):
             ID = intervals[i]['streams'][j]['socket']
             #   Convert rtt from us to ms
-            result[ID]["rtt"].append(intervals[i]['streams'][j]['rtt'] / 1000.0)
+            result[ID]["rtt"].append(
+                intervals[i]['streams'][j]['rtt'] / 1000.0)
             #   Convert from bit to Kbits
             result[ID]["snd_cwnd"].append(
                 intervals[i]['streams'][j]['snd_cwnd'] / 1024)
@@ -105,7 +106,8 @@ def get_statistics(result, socket_keys):
         rtt = result[socket_keys[i]]["rtt"]
         print (
             "[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
-                socket_keys[i], numpy.max(rtt), numpy.min(rtt), numpy.average(rtt), numpy.median(rtt), numpy.var(rtt)))
+                socket_keys[i], numpy.max(rtt), numpy.min(rtt),
+                numpy.average(rtt), numpy.median(rtt), numpy.var(rtt)))
 
     # Bandwidth
     print "--------------------------------------------------------"
@@ -114,7 +116,8 @@ def get_statistics(result, socket_keys):
         bandwidth = result[socket_keys[i]]["bits_per_second"]
         print (
             "[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
-                socket_keys[i], numpy.max(bandwidth), numpy.min(bandwidth), numpy.average(bandwidth),
+                socket_keys[i], numpy.max(bandwidth), numpy.min(
+                    bandwidth), numpy.average(bandwidth),
                 numpy.median(bandwidth), numpy.var(bandwidth)))
 
     # Retransmission Ratio
@@ -124,7 +127,8 @@ def get_statistics(result, socket_keys):
         retr = result[socket_keys[i]]["retransmits"]
         print (
             "[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
-                socket_keys[i], numpy.max(retr), numpy.min(retr), numpy.average(retr), numpy.median(retr),
+                socket_keys[i], numpy.max(retr), numpy.min(
+                    retr), numpy.average(retr), numpy.median(retr),
                 numpy.var(retr)))
 
     # BDP
@@ -144,13 +148,15 @@ def main():
     Main Function, nothing to comment
     """
 
-    algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed", "htcp", "hybla", "illinois", "vegas", "yeah", "reno"]
+    algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed",
+                  "htcp", "hybla", "illinois", "vegas", "yeah", "reno"]
     file_path = "./LabRecord/result/true_topo/dc1_to_lan/test_1/round_5/"
 
     #   Load and parse json object from file with specific
     json_object = {}
     for i in range(0, len(algorithms)):
-        json_object[algorithms[i]] = json.loads("".join(read_text_file(file_path + algorithms[i] + ".log")))
+        json_object[algorithms[i]] = json.loads(
+            "".join(read_text_file(file_path + algorithms[i] + ".log")))
 
     # Print result tables
     print "||Algorithm|Max|Min|Average|Median|Var|"
@@ -169,7 +175,9 @@ def main():
             # Convert to ms
             rtt.append(intervals[j]["streams"][0]["rtt"] / 1000.0)
             snd_cwnd.append(intervals[j]["streams"][0]["snd_cwnd"] / 1024.0)
-            bits_per_second.append(intervals[j]["streams"][0]["bits_per_second"] / (1024.0 * 1024.0))
+            bits_per_second.append(
+                intervals[j]["streams"][0]["bits_per_second"] /
+                (1024.0 * 1024.0))
             retransmits.append(intervals[j]["streams"][0]["retransmits"])
 
         flow_table["rtt"] = rtt
@@ -182,43 +190,82 @@ def main():
     for i in range(len(algorithms)):
         line = result[algorithms[i]]["rtt"]
         if i == 0:
-            print "|RTT(ms)|%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (algorithms[i], numpy.max(line), numpy.min(line),
-                                                             numpy.average(line), numpy.median(line), numpy.var(line))
+            print "|RTT(ms)|%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (
+                algorithms[i],
+                numpy.max(line),
+                numpy.min(line),
+                numpy.average(line),
+                numpy.median(line),
+                numpy.var(line)
+            )
         else:
-            print "||%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (algorithms[i], numpy.max(line), numpy.min(line),
-                                                      numpy.average(line), numpy.median(line), numpy.var(line))
+            print "||%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (
+                algorithms[i],
+                numpy.max(line),
+                numpy.min(line),
+                numpy.average(line),
+                numpy.median(line),
+                numpy.var(line)
+            )
 
     # Print Bandwidth
     for i in range(len(algorithms)):
         line = result[algorithms[i]]["bits_per_second"]
         if i == 0:
-            print "|Bandwidth(Mbit/s)|%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (algorithms[i], numpy.max(line), numpy.min(line),
-                                                                       numpy.average(line), numpy.median(line),
-                                                                       numpy.var(line))
+            print "|Bandwidth(Mbit/s)|%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (
+                algorithms[i],
+                numpy.max(line),
+                numpy.min(line),
+                numpy.average(line),
+                numpy.median(line),
+                numpy.var(line)
+            )
         else:
-            print "||%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (algorithms[i], numpy.max(line), numpy.min(line),
-                                                      numpy.average(line), numpy.median(line), numpy.var(line))
+            print "||%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (
+                algorithms[i],
+                numpy.max(line),
+                numpy.min(line),
+                numpy.average(line),
+                numpy.median(line),
+                numpy.var(line)
+            )
 
     # Print Retransmission Packet
     for i in range(len(algorithms)):
         line = result[algorithms[i]]["retransmits"]
         if i == 0:
             print "|Retransmission Packet	|%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (
-                algorithms[i], numpy.max(line), numpy.min(line),
-                numpy.average(line), numpy.median(line),
-                numpy.var(line))
+                algorithms[i],
+                numpy.max(line),
+                numpy.min(line),
+                numpy.average(line),
+                numpy.median(line),
+                numpy.var(line)
+            )
         else:
-            print "||%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (algorithms[i], numpy.max(line), numpy.min(line),
-                                                      numpy.average(line), numpy.median(line), numpy.var(line))
+            print "||%s|%.2f|%.2f|%.2f|%.2f|%.2f|" % (
+                algorithms[i],
+                numpy.max(line),
+                numpy.min(line),
+                numpy.average(line),
+                numpy.median(line),
+                numpy.var(line)
+            )
 
     # Print BDP
     for i in range(len(algorithms)):
         rtt = result[algorithms[i]]["rtt"]
         bit = result[algorithms[i]]["bits_per_second"]
         if i == 0:
-            print "|BDP(Kbit)|%s|%5.2f|" % (algorithms[i], numpy.max(bit) * numpy.min(rtt))
+            print "|BDP(Kbit)|%s|%5.2f|" % (
+                algorithms[i],
+                numpy.max(bit) * numpy.min(rtt)
+            )
         else:
-            print "||%s|%5.2f|" % (algorithms[i], numpy.max(bit) * numpy.min(rtt))
+            print "||%s|%5.2f|" % (
+                algorithms[i],
+                numpy.max(bit) * numpy.min(rtt)
+            )
 
     return 0
 

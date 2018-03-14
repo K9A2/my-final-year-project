@@ -55,7 +55,8 @@ def get_result_dictionary(intervals, keys):
         for j in range(len(intervals[i]['streams'])):
             ID = intervals[i]['streams'][j]['socket']
             #   Convert rtt from us to ms
-            result[ID]["rtt"].append(intervals[i]['streams'][j]['rtt'] / 1000.0)
+            result[ID]["rtt"].append(
+                intervals[i]['streams'][j]['rtt'] / 1000.0)
             #   Convert from bit to Kbits
             result[ID]["snd_cwnd"].append(
                 intervals[i]['streams'][j]['snd_cwnd'] / 1024)
@@ -151,27 +152,42 @@ def get_statistics(result, socket_keys):
     print "RTT(ms)"
     for i in range(len(socket_keys)):
         rtt = result[socket_keys[i]]["rtt"]
-        print (
-            "[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
-                socket_keys[i], numpy.max(rtt), numpy.min(rtt), numpy.median(rtt), numpy.average(rtt), numpy.var(rtt)))
+        print ("[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
+            socket_keys[i],
+            numpy.max(rtt),
+            numpy.min(rtt),
+            numpy.median(rtt),
+            numpy.average(rtt),
+            numpy.var(rtt))
+        )
 
     # Bandwidth
     print "--------------------------------------------------------"
     print "Bandwidth(Mbit/s)"
     for i in range(len(socket_keys)):
         bandwidth = result[socket_keys[i]]["bits_per_second"]
-        print (
-            "[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
-                socket_keys[i], numpy.max(bandwidth), numpy.min(bandwidth), numpy.median(bandwidth), numpy.average(bandwidth), numpy.var(bandwidth)))
+        print ("[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
+            socket_keys[i],
+            numpy.max(bandwidth),
+            numpy.min(bandwidth),
+            numpy.median(bandwidth),
+            numpy.average(bandwidth),
+            numpy.var(bandwidth))
+        )
 
     # Retransmission Ratio
     print "--------------------------------------------------------"
     print "Retransmission(packet)"
     for i in range(len(socket_keys)):
         retr = result[socket_keys[i]]["retransmits"]
-        print (
-            "[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
-                socket_keys[i], numpy.max(retr), numpy.min(retr), numpy.median(retr), numpy.average(retr), numpy.var(retr)))
+        print ("[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
+            socket_keys[i],
+            numpy.max(retr),
+            numpy.min(retr),
+            numpy.median(retr),
+            numpy.average(retr),
+            numpy.var(retr))
+        )
 
     # BDP
     print "--------------------------------------------------------"
@@ -184,21 +200,14 @@ def get_statistics(result, socket_keys):
         for j in range(len(rtt)):
             bdp.append(rtt[j] * bandwidth[j])
 
-        print ("[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (socket_keys[i], numpy.max(bdp), numpy.min(bdp), numpy.median(bdp), numpy.average(bdp), numpy.var(bdp)))
-
-
-def parse_arguments():
-    """
-    Parse arguments from command line input. Empty now.
-    """
-    print "Hello world"
-
-
-def print_usage():
-    """
-    Print usage when user input wrong arguments. Empty now.
-    """
-    print "Hello world"
+        print ("[%-2d]   %-10.2f%-10.2f%-10.2f%-10.2f%-10.2f" % (
+            socket_keys[i],
+            numpy.max(bdp),
+            numpy.min(bdp),
+            numpy.median(bdp),
+            numpy.average(bdp),
+            numpy.var(bdp))
+        )
 
 
 def main():
@@ -206,7 +215,8 @@ def main():
     Main Function, nothing to comment
     """
     #   Load and parse json object from file with specific
-    file_name = "./LabRecord/result/true_topo/aliyun1_to_amazon/benchmark/benchmark.log"
+    file_name = "../LabRecord/result/true_topo/aliyun1_to_amazon/benchmark/\
+    benchmark.log"
     doc = re.sub("[\n|\t]", "", "".join(read_text_file(file_name)))
     json_object = json.loads("".join(doc))
 

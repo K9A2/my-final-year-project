@@ -13,7 +13,8 @@ def print_to_csv(result, keys):
         bandwidth = result[keys[i]]["bits_per_second"]
         retr = result[keys[i]]["retransmits"]
         for j in range(len(rtt)):
-            f.write(str(rtt[j]) + "," + str(bandwidth[j]) + "," + str(retr[j]) + "\n")
+            f.write(str(rtt[j]) + "," + str(bandwidth[j]) + "," +
+                    str(retr[j]) + "\n")
 
     f.close()
 

@@ -48,7 +48,8 @@ def get_result_dictionary(intervals, keys):
         for j in range(len(intervals[i]['streams'])):
             ID = intervals[i]['streams'][j]['socket']
             #   Convert rtt from us to ms
-            result[ID]["rtt"].append(intervals[i]['streams'][j]['rtt'] / 1000.0)
+            result[ID]["rtt"].append(
+                intervals[i]['streams'][j]['rtt'] / 1000.0)
             #   Convert from bit to Kbits
             result[ID]["snd_cwnd"].append(
                 intervals[i]['streams'][j]['snd_cwnd'] / 1024)
@@ -77,15 +78,19 @@ def main():
     Main Function, nothing to comment
     """
 
-    algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed", "htcp", "hybla", "illinois", "vegas", "yeah", "reno"]
-    names = ["BBR", "Scalable", "BIC", "CUBIC", "High Speed", "H-TCP", "Hybla", "Illinois", "Vegas", "YeAH", "Reno"]
+    algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed", "htcp",
+                  "hybla", "illinois", "vegas", "yeah", "reno"]
+    names = ["BBR", "Scalable", "BIC", "CUBIC", "High Speed", "H-TCP", "Hybla",
+             "Illinois", "Vegas", "YeAH", "Reno"]
     file_path = "./LabRecord/result/true_topo/"
-    # round_name = ["round_0/", "round_1/", "round_2/", "round_3/", "round_4/", "round_5/"]
+    # round_name = ["round_0/", "round_1/", "round_2/", "round_3/", "round_4/",
+    # "round_5/"]
     round_name = ["round_0/"]
 
     markers = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s"]
     colors = ["black", "red", "peru", "darkorange", "gold", "yellowgreen",
-              "deeppink", "darkviolet", "slateblue", "deepskyblue", "mediumturquoise", "lime"]
+              "deeppink", "darkviolet", "slateblue", "deepskyblue",
+              "mediumturquoise", "lime"]
 
     scenarios = ["dc1_to_lan/", "dc2_to_aliyun2/", "aliyun1_to_amazon/"]
 
@@ -110,7 +115,9 @@ def main():
                 json_object = json.loads("".join(read_text_file(file_name)))
                 intervals = json_object["intervals"]
                 for i in range(0, len(intervals)):
-                    result[algorithm].append(intervals[i]["streams"][0]["bits_per_second"] / (1024.0 * 1024.0))
+                    result[algorithm].append(
+                        intervals[i]["streams"][0]["bits_per_second"] /
+                        (1024.0 * 1024.0))
 
     for algorithm in algorithms:
         for i in range(1, 21):
@@ -125,7 +132,8 @@ def main():
         time.append((i + 1) * 30)
 
     for i in range(len(algorithms)):
-        plt.plot(time, avg[algorithms[i]], linewidth=3, label=names[i], color=colors[i], marker=markers[i])
+        plt.plot(time, avg[algorithms[i]], linewidth=3,
+                 label=names[i], color=colors[i], marker=markers[i])
 
     plt.xlabel("Time(s)", fontsize=fsize)
     plt.xticks(fontsize=fsize)
@@ -137,7 +145,8 @@ def main():
     ax = plt.subplot(111)
     handles, labels = ax.get_legend_handles_labels()
     # plt.legend(fontsize=35, loc='upper center')
-    plt.legend(flip(handles, 3), flip(labels, 3), loc="upper center", ncol=4, fontsize=35)
+    plt.legend(flip(handles, 3), flip(labels, 3),
+               loc="upper center", ncol=4, fontsize=35)
 
     plt.show()
 

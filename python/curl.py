@@ -44,16 +44,18 @@ def main():
     file_path = "./LabRecord/result/curl/"
     file_names = ["curl_lan.csv", "curl_di.csv", "curl_ii.csv"]
 
-    colors = ["orange", "orange", "orange", "orange", "orange", "orange", "orange",
-              "orange", "orange", "orange", "orange", "orange"]
+    colors = ["orange", "orange", "orange", "orange", "orange", "orange",
+              "orange", "orange", "orange", "orange", "orange", "orange"]
 
-    # colors = ["#70AD47", "#4472C4", "#FFC000", "#ED7D31", "#7030A0", "#002060",
-    #          "#92D050", "#FF0000", "#C00000", "#833C0B", "#BF9000", "#A8D08D"]
-    algorithms = ["cubic", "westwood", "bbr", "scalable", "bic", "highspeed", "htcp", "hybla", "illinois", "vegas",
-                  "yeah", "reno"]
+    # colors = ["#70AD47", "#4472C4", "#FFC000", "#ED7D31", "#7030A0", ]
+    # "#002060",
+    #          "#92D050", "#FF0000", "#C00000", "#833C0B", "#BF9000",
+    # "#A8D08D"]
+    algorithms = ["cubic", "westwood", "bbr", "scalable", "bic", "highspeed",
+                  "htcp", "hybla", "illinois", "vegas", "yeah", "reno"]
 
-    names = ["CUBIC", "Westwood", "BBR", "Scalable", "BIC", "High Speed", "H-TCP", "Hybla", "Illinois", "Vegas",
-             "YeAH", "Reno"]
+    names = ["CUBIC", "Westwood", "BBR", "Scalable", "BIC", "High Speed",
+             "H-TCP", "Hybla", "Illinois", "Vegas", "YeAH", "Reno"]
 
     scenario = file_names[1]
     fsize = 52
@@ -62,7 +64,8 @@ def main():
     # load records
     result = {}
     for file_name in file_names:
-        result[file_name] = get_result_dictionary(read_text_file(file_path + file_name), names)
+        result[file_name] = get_result_dictionary(
+            read_text_file(file_path + file_name), names)
 
     # print variance
     for name in names:

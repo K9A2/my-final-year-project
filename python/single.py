@@ -2,8 +2,8 @@
 #   filename: single.py
 
 """
-This file includes the procedure to process the data from iperf3 with single thread, i.e. "iperf3 -c hostname
-[-i time]" and draws a LINE CHART for it.
+This file includes the procedure to process the data from iperf3 with single 
+thread, i.e. "iperf3 -c hostname [-i time]" and draws a LINE CHART for it.
 """
 
 import matplotlib.pyplot as plt
