@@ -14,10 +14,12 @@
 
 #------------------------------- Code Starts -----------------------------------
 
-algorithms=("bbr" "scalable" "bic" "cubic" "highspeed" "htcp" "hybla" "illinois" "vegas" "yeah" "reno")
+algorithms=("bbr" "cubic" "reno" "veno" "westwood")
+
+# algorithms=("bbr" "scalable" "bic" "cubic" "highspeed" "htcp" "hybla" "illinois" "vegas" "yeah" "reno")
 
 second=600
-rounds=6
+rounds=3
 
 # Switch algorithms and run the test
 for((i=0;i<${rounds};i++))
@@ -30,7 +32,7 @@ do
         ls_date=`date  +'%Y_%m_%d_%T'`
         echo ${ls_date}
         echo round_${i}_${algorithm}
-        iperf3 -c 125.218.213.22 -t ${second} -V -J | tee ./round_${i}/iperf3_${ls_date}_${algorithm}_r${i}_l${second}_i1_s0_json.log
+        iperf3 -c 10.42.0.1 -t ${second} -V -J | tee ./round_${i}/${algorithm}.log
         sleep 3
     done
 done

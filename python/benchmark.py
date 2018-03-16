@@ -1,12 +1,9 @@
 # coding=utf-8
 # filename: benchmark.py
 
-"""
-This file includes the procedure to process the data from iperf3 with single
-thread, i.e. "iperf3 -c hostname [-i time]" and draws a LINE CHART for it.
-"""
 import json
 import re
+
 import matplotlib.pyplot as plt
 import numpy
 
@@ -211,21 +208,18 @@ def get_statistics(result, socket_keys):
 
 
 def main():
-    """
-    Main Function, nothing to comment
-    """
-    #   Load and parse json object from file with specific
+    # Load and parse json object from file with specific
     file_name = "../lab-record/result/true_topo/aliyun1_to_amazon/benchmark/" \
         "benchmark.log"
     doc = re.sub("[\n|\t]", "", "".join(read_text_file(file_name)))
-    json_object = json.loads("".join(doc))
+    benchmark = json.loads("".join(doc))
 
-    #   Important JSON objects
-    intervals = json_object["intervals"]
-    start = json_object["start"]
-    end = json_object["end"]
+    # JSON objects
+    intervals = benchmark["intervals"]
+    start = benchmark["start"]
+    end = benchmark["end"]
 
-    #   Socket IDs to get data from result dictionary
+    # Socket IDs to get data from result dictionary
     socket_keys = get_socket_keys(intervals)
 
     result = get_result_dictionary(intervals, socket_keys)
