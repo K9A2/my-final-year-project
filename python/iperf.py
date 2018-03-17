@@ -2,20 +2,28 @@
 # filename: benchmark.py
 
 """
-This file includes the procedure to process the data from iperf3 with single
-thread, i.e. "iperf3 -c hostname [-i time]" and draws a LINE CHART for it.
+Calculat parameters for wired scenario
 """
 import json
-import numpy as np
-import matplotlib.pyplot as plt
-from pylab import *
 import re
-import statsmodels.api as sm
+
 import matplotlib.patches as mpatches
-from scipy import stats
+import matplotlib.pyplot as plt
+import numpy as np
+import statsmodels.api as sm
+import pylab
+import scipy
 
 
 def read_text_file(file_name):
+    """Read log file contains JSON string
+
+    Args:
+        file_name (string): [File path to log file]
+
+    Returns:
+        [list]: [Lines in log file]
+    """
     target_file = open(file_name)
     lines = target_file.readlines()
 
@@ -23,100 +31,61 @@ def read_text_file(file_name):
     return lines
 
 
-def get_result_dictionary(intervals, keys):
-    result = {}
-
-    #   Create entries in dictionary for all flows
-    for i in range(len(keys)):
-        flow_table = {}
-        rtt_list = []
-        snd_cwnd_list = []
-        bits_per_second_list = []
-        retransmits_list = []
-        flow_table["rtt"] = rtt_list
-        flow_table["snd_cwnd"] = snd_cwnd_list
-        flow_table["bits_per_second"] = bits_per_second_list
-        flow_table["retransmits"] = retransmits_list
-        #   Add entry
-        result[keys[i]] = flow_table
-
-    # Load data for each flow
-    for i in range(0, len(intervals)):
-        for j in range(len(intervals[i]['streams'])):
-            ID = intervals[i]['streams'][j]['socket']
-            #   Convert rtt from us to ms
-            result[ID]["rtt"].append(
-                intervals[i]['streams'][j]['rtt'] / 1000.0)
-            #   Convert from bit to Kbits
-            result[ID]["snd_cwnd"].append(
-                intervals[i]['streams'][j]['snd_cwnd'] / 1024)
-            #   Convert from bit to Mbit
-            result[ID]["bits_per_second"].append(
-                intervals[i]['streams'][j]['bits_per_second'] / (1024 * 1024))
-            result[ID]["retransmits"].append(
-                intervals[i]['streams'][j]['retransmits'])
-
-    return result
-
-
-def sort_by_value(d):
-    items = d.items()
-    back_items = [[v[1], v[0]] for v in items]
-    back_items.sort()
-    return [back_items[i][1] for i in range(0, len(back_items))]
-
-
 def main():
     """
     Main Function, nothing to comment
     """
 
-    algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed",
-                  "htcp", "hybla", "illinois", "vegas", "yeah", "reno"]
-    names = ["BBR", "Scalable", "BIC", "CUBIC", "High Speed",
-             "H-TCP", "Hybla", "Illinois", "Vegas", "YeAH", "Reno"]
-    file_path = "../lab-record/result/true_topo/"
-    round_name = ["round_0/", "round_1/", "round_2/",
-                  "round_3/", "round_4/", "round_5/"]
+    # Names of evaluated algorithms
+    algorithms = ["bbr", "scalable", "bic", "cubic", "highspeed", "htcp",
+                  "hybla", "illinois", "vegas", "yeah", "reno"]
+    names = ["BBR", "Scalable", "BIC", "CUBIC", "High Speed", "H-TCP", "Hybla",
+             "Illinois", "Vegas", "YeAH", "Reno"]
+
+    # Path to benchmark lon
     benchmark_name = "benchmark/benchmark.log"
 
+    # Path to evaluation log folder
+    file_path = "../lab-record/result/true_topo/"
+
+    tests = ["test_0/", "test_1/"]
+    round_name = ["round_0/", "round_1/", "round_2/", "round_3/", "round_4/",
+                  "round_5/"]
+
+    # Settings from plotting
     markers = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s"]
     colors = ["black", "red", "peru", "darkorange", "gold", "yellowgreen",
               "deeppink", "darkviolet", "slateblue", "deepskyblue",
               "mediumturquoise", "lime"]
+    font_size = 52
 
+    # Scanerios to be plotted
     scenarios = ["dc1_to_lan/", "dc2_to_aliyun2/", "aliyun1_to_amazon/"]
-
-    tests = ["test_0/", "test_1/"]
-
     scenario = scenarios[1]
 
-    fsize = 52
-
-    result = {}
-
-    for algorithm in algorithms:
-        rtt = []
-        bw = []
-        dictionary = {"rtt": rtt, "bw": bw}
-        result[algorithm] = dictionary
-
-    # load benchmark
+    # Load benchmark
     benchmark_path = file_path + scenario + "benchmark/benchmark.log"
     benchmark_json = json.loads("".join(read_text_file(benchmark_path)))
     rtt = []
-    bw = []
+    throughput = []
     for i in range(len(benchmark_json["intervals"])):
         rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000)
-        bw.append(benchmark_json["intervals"][i]["streams"]
-                  [0]["bits_per_second"] / (1024 * 1024))
-
-    benchmark = {"rtt": np.average(rtt), "bw": np.average(bw)}
-
+        throughput.append(benchmark_json["intervals"][i]["streams"]
+                          [0]["bits_per_second"] / (1024 * 1024))
+    # Print bechmark results
+    benchmark = {"rtt": np.average(rtt), "throughput": np.average(throughput)}
     print "rtt: " + str(benchmark["rtt"])
-    print "bw: " + str(benchmark["bw"])
+    print "throughput: " + str(benchmark["throughput"])
 
-    # data
+    # Create result set for test result
+    result = {}
+    for algorithm in algorithms:
+        rtt = []
+        throughput = []
+        dictionary = {"rtt": rtt, "throughput": throughput}
+        result[algorithm] = dictionary
+
+    # Load date into result set
     for t in tests:
         for algorithm in algorithms:
             for r in round_name:
@@ -124,75 +93,82 @@ def main():
                 json_object = json.loads("".join(read_text_file(file_name)))
                 intervals = json_object["intervals"]
                 for i in range(0, len(intervals)):
+                    # Convert us into ms
                     result[algorithm]["rtt"].append(
                         intervals[i]["streams"][0]["rtt"] / 1000.0)
-                    result[algorithm]["bw"].append(
+                    # Convert bits to Mbits
+                    result[algorithm]["throughput"].append(
                         intervals[i]["streams"][0]["bits_per_second"] /
                         (1024.0 * 1024.0))
 
-    # print average throughput
+    # Calculate statistics
     avg_rtt = []
-    avg_bw = []
+    avg_throughput = []
+    # Result dictionary for sortting
     kv_rtt = {}
-    kv_bw = {}
+    kv_throughput = {}
     for algorithm in algorithms:
         print algorithm
         avg_rtt.append(np.average(result[algorithm]["rtt"]))
-        avg_bw.append(np.average(result[algorithm]["bw"]))
+        avg_throughput.append(np.average(result[algorithm]["throughput"]))
         kv_rtt[algorithm] = np.average(result[algorithm]["rtt"])
-        kv_bw[algorithm] = np.average(result[algorithm]["bw"])
+        kv_throughput[algorithm] = np.average(result[algorithm]["throughput"])
 
-    print "sorted rtt"
+    # Print statistics
+    print "sorted rtt:"
     print sorted(kv_rtt.items(), key=lambda item: item[1])
+    print "sorted throughput: "
+    print sorted(kv_throughput.items(), key=lambda item: item[1])
 
-    print "sorted bw"
-    print sorted(kv_bw.items(), key=lambda item: item[1])
+    print "max rtt: ", np.max(avg_rtt)
+    print "min rtt: ", np.min(avg_rtt)
+    print "max throughput: ", np.max(avg_throughput)
+    print "min throughput: ", np.min(avg_throughput)
 
-    print "max rtt"
-    print np.max(avg_rtt)
-    print "min rtt"
-    print np.min(avg_rtt)
-    print "max bw"
-    print np.max(avg_bw)
-    print "min bw"
-    print np.min(avg_bw)
-
-    # print average rtt
-
-    # plot rtt in fig 1
+    # Draw rtt CDF
     fig_rtt = plt.figure("rtt")
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
-
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
-
-        plt.plot(sorted_data, yvals, linewidth=4,
-                 label=names[i], color=colors[i])
-    # plot benchmark line
+        plt.plot(
+            sorted_data,
+            yvals,
+            linewidth=4,
+            label=names[i],
+            color=colors[i]
+        )
+    # Draw benchmark line
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
-    plt.xlabel("RTT(ms)", fontsize=fsize)
-    plt.xticks(fontsize=fsize)
+    # Xticks and Yticks
+    plt.xlabel("RTT(ms)", fontsize=font_size)
+    plt.xticks(fontsize=font_size)
+    plt.ylabel("CDF", fontsize=font_size)
+    plt.yticks(fontsize=font_size)
     # plt.xlim(220, 350)
-    plt.ylabel("Cumulative Distribution", fontsize=fsize)
-    plt.yticks(fontsize=fsize)
+    # plt.ylim(0, 0)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
-    # plot bandwidth in fig 2
-    fig_bw = plt.figure("bandwidth")
+    # Draw throughput CDF
+    fig_throughput = plt.figure("bandwidth")
     for i in range(len(algorithms)):
-        sorted_data = np.sort(result[algorithms[i]]["bw"])
-
+        sorted_data = np.sort(result[algorithms[i]]["throughput"])
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
-
-        plt.plot(sorted_data, yvals, linewidth=4,
-                 label=names[i], color=colors[i])
-    # plot benchmark line
-    plt.axvline(benchmark["bw"], linewidth=3, color="black")
-    plt.xlabel("Throughput(Mbits/s)", fontsize=fsize)
-    plt.xticks(fontsize=fsize)
+        plt.plot(
+            sorted_data,
+            yvals,
+            linewidth=4,
+            label=names[i],
+            color=colors[i]
+        )
+    # Draw benchmark line
+    plt.axvline(benchmark["throughput"], linewidth=3, color="black")
+    # Xticks and Yticks
+    plt.xlabel("Throughput(Mbits/s)", fontsize=font_size)
+    plt.xticks(fontsize=font_size)
+    plt.ylabel("Cumulative Distribution", fontsize=font_size)
+    plt.yticks(fontsize=font_size)
     # plt.xlim(0, 3)
-    plt.ylabel("Cumulative Distribution", fontsize=fsize)
-    plt.yticks(fontsize=fsize)
+    # plt.ylim(0, 0)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
     plt.show()
