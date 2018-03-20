@@ -118,8 +118,8 @@ def main():
 
     # Draw rtt CDF
     fig_rtt = plt.figure("rtt")
-    ax = fig_rtt.add_subplot(111)
-    ax.set_xscale("log")
+    # ax = fig_rtt.add_subplot(111)
+    # ax.set_xscale("log")
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
@@ -134,15 +134,19 @@ def main():
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
     # Xticks and Yticks
     plt.xlabel("RTT(ms)", fontsize=font_size)
-    plt.xticks(fontsize=font_size)
+    plt.xticks(fontsize=font_size, y=-0.02)
     plt.ylabel("CDF", fontsize=font_size)
     plt.yticks(fontsize=font_size)
     # plt.xlim(220, 350)
     # plt.ylim(0, 0)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
+    plt.subplots_adjust(left=0.10, right=0.95, top=0.95, bottom=0.15)
+
     # Draw throughput CDF
     fig_throughput = plt.figure("bandwidth")
+    # ax = fig_throughput.add_subplot(111)
+    # ax.set_xscale("log")
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["throughput"])
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
@@ -157,12 +161,14 @@ def main():
     plt.axvline(benchmark["throughput"], linewidth=3, color="black")
     # Xticks and Yticks
     plt.xlabel("Throughput(Mbits/s)", fontsize=font_size)
-    plt.xticks(fontsize=font_size)
+    plt.xticks(fontsize=font_size, y=-0.02)
     plt.ylabel("Cumulative Distribution", fontsize=font_size)
     plt.yticks(fontsize=font_size)
     # plt.xlim(0, 3)
     # plt.ylim(0, 0)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
+
+    plt.subplots_adjust(left=0.10, right=0.95, top=0.95, bottom=0.15)
 
     plt.show()
 
