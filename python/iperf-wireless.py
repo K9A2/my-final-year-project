@@ -58,7 +58,7 @@ def main():
     # Fetch raw meterials from log converted JSON object
     for i in range(len(benchmark_json["intervals"])):
         # Convert from us to ms
-        rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000)
+        rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000.0)
         # Convert from bit to Mbits
         throughput.append(benchmark_json["intervals"][i]["streams"][0]
                           ["bits_per_second"] / (1024.0 * 1024.0))
