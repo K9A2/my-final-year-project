@@ -1,3 +1,4 @@
 # 忽略所有生成的 pdf 文件
 *.pdf
 .vscode
+node_modules
