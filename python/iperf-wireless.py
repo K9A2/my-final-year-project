@@ -61,7 +61,7 @@ def main():
         rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000)
         # Convert from bit to Mbits
         throughput.append(benchmark_json["intervals"][i]["streams"][0]
-                          ["bits_per_second"] / (1024 * 1024))
+                          ["bits_per_second"] / (1024.0 * 1024.0))
     benchmark = {"rtt": np.average(rtt), "throughput": np.average(throughput)}
     # Print average rtt and throughput
     print "benchmark:"
@@ -116,7 +116,9 @@ def main():
     print "min throughput: ", np.min(avg_throughput)
 
     # Plot RTT in fig 1
-    plt.figure("rtt")
+    fig_rtt = plt.figure("rtt")
+    ax = fig_rtt.add_subplot(111)
+    ax.set_xscale("log")
     # Calculate and print CDF figure
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
@@ -131,15 +133,20 @@ def main():
     # Draw benchmark line and other information
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
     plt.xlabel("RTT(ms)", fontsize=font_size)
-    plt.xticks(fontsize=font_size)
+    plt.xticks(fontsize=font_size, y=-0.02)
+    # plt.set_xsacle("log")
     plt.ylabel("CDF", fontsize=font_size)
     plt.yticks(fontsize=font_size)
-    plt.xlim(0, 4000)
+    # plt.xlim(0, 4000)
     # plt.ylim(0, 4000)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
+    plt.subplots_adjust(left=0.10, right=0.95, top=0.95, bottom=0.15)
+
     # Plot Throughput in fig 2
-    plt.figure("bandwidth")
+    fig_throughput = plt.figure("throughput")
+    # ax = fig_throughput.add_subplot(111)
+    # ax.set_xscale("log")
     # Calculate and print CDF figure
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["throughput"])
@@ -154,12 +161,15 @@ def main():
     # plot benchmark line
     plt.axvline(benchmark["throughput"], linewidth=3, color="black")
     plt.xlabel("Throughput(Mbits/s)", fontsize=font_size)
-    plt.xticks(fontsize=font_size)
+    plt.xticks(fontsize=font_size, y=-0.02)
+    # ax.set_xsacle("log")
     plt.ylabel("CDF", fontsize=font_size)
     plt.yticks(fontsize=font_size)
     # plt.xlim(0, 3)
     # plt.ylim(0, 0)
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
+
+    plt.subplots_adjust(left=0.10, right=0.95, top=0.95, bottom=0.15)
 
     plt.show()
 
