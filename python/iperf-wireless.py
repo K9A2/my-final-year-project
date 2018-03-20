@@ -11,7 +11,6 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
-from pylab import *
 from scipy import stats
 
 
@@ -46,7 +45,6 @@ def main():
     rounds = ["round_0/", "round_1/", "round_2/"]
 
     # Settings for plotting
-    markers = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s"]
     colors = ["black", "red", "peru", "darkorange", "gold", "yellowgreen",
               "deeppink", "darkviolet", "slateblue", "deepskyblue",
               "mediumturquoise", "lime"]
@@ -118,7 +116,7 @@ def main():
     print "min throughput: ", np.min(avg_throughput)
 
     # Plot RTT in fig 1
-    fig_rtt = plt.figure("rtt")
+    plt.figure("rtt")
     # Calculate and print CDF figure
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
@@ -141,7 +139,7 @@ def main():
     plt.legend(fontsize=35, numpoints=100, loc='lower right')
 
     # Plot Throughput in fig 2
-    fig_throughput = plt.figure("bandwidth")
+    plt.figure("bandwidth")
     # Calculate and print CDF figure
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["throughput"])
