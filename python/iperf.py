@@ -162,7 +162,7 @@ def main():
     # Xticks and Yticks
     plt.xlabel("Throughput(Mbits/s)", fontsize=font_size)
     plt.xticks(fontsize=font_size, y=-0.02)
-    plt.ylabel("Cumulative Distribution", fontsize=font_size)
+    plt.ylabel("CDF", fontsize=font_size)
     plt.yticks(fontsize=font_size)
     # plt.xlim(0, 3)
     # plt.ylim(0, 0)
