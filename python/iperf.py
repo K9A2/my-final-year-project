@@ -60,9 +60,9 @@ def main():
     rtt = []
     throughput = []
     for i in range(len(benchmark_json["intervals"])):
-        rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000)
+        rtt.append(benchmark_json["intervals"][i]["streams"][0]["rtt"] / 1000.0)
         throughput.append(benchmark_json["intervals"][i]["streams"]
-                          [0]["bits_per_second"] / (1024 * 1024))
+                          [0]["bits_per_second"] / (1024.0 * 1024.0))
     # Print bechmark results
     benchmark = {"rtt": np.average(rtt), "throughput": np.average(throughput)}
     print "rtt: " + str(benchmark["rtt"])
@@ -118,6 +118,8 @@ def main():
 
     # Draw rtt CDF
     fig_rtt = plt.figure("rtt")
+    ax = fig_rtt.add_subplot(111)
+    ax.set_xscale("log")
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
