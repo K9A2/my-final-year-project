@@ -1,0 +1,27 @@
+{
+  "name": "my-final-year-project",
+  "version": "1.0.0",
+  "description": "My final year project on analysing TCP congestion algorithms base on evaluations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/K9A2/my-final-year-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/K9A2/my-final-year-project/issues"
+  },
+  "homepage": "https://github.com/K9A2/my-final-year-project#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
