@@ -5,14 +5,9 @@
 Calculat parameters for wired scenario
 """
 import json
-import re
 
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
-import statsmodels.api as sm
-import pylab
-import scipy
 
 
 def read_text_file(file_name):
@@ -42,9 +37,6 @@ def main():
     names = ["BBR", "Scalable", "BIC", "CUBIC", "High Speed", "H-TCP", "Hybla",
              "Illinois", "Vegas", "YeAH", "Reno"]
 
-    # Path to benchmark lon
-    benchmark_name = "benchmark/benchmark.log"
-
     # Path to evaluation log folder
     file_path = "../lab-record/result/true_topo/"
 
@@ -53,7 +45,6 @@ def main():
                   "round_5/"]
 
     # Settings from plotting
-    markers = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s"]
     colors = ["black", "red", "peru", "darkorange", "gold", "yellowgreen",
               "deeppink", "darkviolet", "slateblue", "deepskyblue",
               "mediumturquoise", "lime"]
