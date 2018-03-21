@@ -11,8 +11,8 @@
         - [本章引论](#%E6%9C%AC%E7%AB%A0%E5%BC%95%E8%AE%BA)
         - [TCP拥塞控制的基本概念](#tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)
             - [拥塞的来源与拥塞窗口](#%E6%8B%A5%E5%A1%9E%E7%9A%84%E6%9D%A5%E6%BA%90%E4%B8%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3)
-            - [AIMD](#aimd)
             - [慢开始、拥塞避免、快重传和快恢复](#%E6%85%A2%E5%BC%80%E5%A7%8B%E3%80%81%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E3%80%81%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D)
+            - [AIMD](#aimd)
         - [本文所涉及到的TCP拥塞算法](#%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95)
         - [TCP拥塞算法性能测试相关研究](#tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
     - [三、测试方案](#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
@@ -91,7 +91,12 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 #### 慢开始、拥塞避免、快重传和快恢复
 
-慢开始（Slow start）、拥塞避免（Congestion Avoidance）、快重传（Fast Retransmit）和快恢复（Fast Recovery）是TCP拥塞控制的重要概念。
+慢开始、拥塞避免（Congestion Avoidance）、快重传（Fast Retransmit）和快恢复（Fast Recovery）是TCP层进行拥塞控制的重要概念，在RFC 5681[21]中有详细描述。
+
+慢开始（Slow start）指的是发送方以一个较小的拥塞窗口大小，比如1至10个MSS（Maximum Segment Size，最大分段大小）来发送数据并使得cwnd的值翻倍，以探测网络所能承载的最大数据量，并避免在未知网络具体情况的情况下就发送大量数据而使网络出现拥塞。具体地，每当发送方接收到一个数据包的确认时，就会使拥塞窗口的大小增加一个MSS，直到发送的数据超过了接收方的接收窗口（Receiver Window，rwnd）大小、超过了ssthresh的限制等异常情况，又或者网络中出现了拥塞，可简要描述如下：
+
+* 在cwnd增长至与ssthresh相当时又或者超出了接收方的rwnd，就将用线性增长的方式来使得cwnd得以继续缓慢地增长。具体地就是在每经过RTT（Round Trip Time，往返时延）的时间就使cwnd增加一个MSS的大小。
+* 若发送方察觉到网络中出现了拥塞，就将进入拥塞避免状态，并调用系统中指定的拥塞控制算法以降低网络中的数据包的数量，其具体操作由拥塞控制算法确定。而此种情况下的拥塞控制效果也是本次研究的重点。
 
 #### AIMD
 
@@ -167,3 +172,4 @@ TAN Nguyen等人在其研究[11]中引入了NS-2模拟器以深入分析算法�
 18. Brakmo L S, Peterson L L. TCP Vegas: End to end congestion avoidance on a global Internet[J]. IEEE Journal on selected Areas in communications, 1995, 13(8): 1465-1480.
 19. Ha S, Rhee I, Xu L. CUBIC: a new TCP-friendly high-speed TCP variant[J]. ACM SIGOPS operating systems review, 2008, 42(5): 64-74.
 20. Xu L, Harfoush K, Rhee I. Binary increase congestion control (BIC) for fast long-distance networks[C]//INFOCOM 2004. Twenty-third AnnualJoint Conference of the IEEE Computer and Communications Societies. IEEE, 2004, 4: 2514-2524.
+21. RFC 5681, https://tools.ietf.org/html/rfc5681
