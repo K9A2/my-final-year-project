@@ -10,7 +10,7 @@
     - [二、相关研究综述](#%E4%BA%8C%E3%80%81%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0)
         - [本章引论](#%E6%9C%AC%E7%AB%A0%E5%BC%95%E8%AE%BA)
         - [TCP拥塞控制的基本概念](#tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)
-        - [本文所涉及到的TCP拥塞算法简介](#%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B)
+        - [本文所涉及到的TCP拥塞算法](#%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95)
         - [TCP拥塞算法性能测试相关研究](#tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
     - [三、测试方案](#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
         - [性能标准](#%E6%80%A7%E8%83%BD%E6%A0%87%E5%87%86)
@@ -46,7 +46,7 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 ### 论文主要研究内容
 
-本次研究的主要内容是分别对有线和无线网络环境中的各种拥塞控制算法在不同的应用场景之下进行了全面的测试，并分析了各种算法在拥塞控制效果上的差异及其成因，并以此为基础提出了在不同网络场景中选择合适的拥塞控制算法的建议。本文的主要工作可简要描述为如下：
+本次研究的主要内容是分别对有线和无线网络环境中的各种拥塞控制算法在不同的应用场景之下进行了全面的测试，并分析了各种算法在拥塞控制效果上的差异及其成因，并以此为基础提出了在不同网络场景中选择合适的拥塞控制算法的建议。本文的主要工作可简要描述如下：
 
 * 全面调研了现有的针对TCP拥塞控制算法的测试研究，重点研究了这些研究中关于设计实验与部署测试工具的部分。同时，针对性地在前人工作的基础上引入了符合当前网络环境的实验工具与实验方法。
 * 本次研究针对有线和无线两种网络形式，设计了几种具有针对性的测试场景，并对相应场景中常用的拥塞控制算法进行了全面的测试。
@@ -78,15 +78,19 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 ### TCP拥塞控制的基本概念
 
-### 本文所涉及到的TCP拥塞算法简介
+### 本文所涉及到的TCP拥塞算法
 
 ### TCP拥塞算法性能测试相关研究
 
-由于对TCP拥塞控制算法在不同网络环境下进行测试以检查其有效性十分重要，学界和工业界的研究人员均对此问题做出了大量研究。
+由于对TCP拥塞控制算法在不同网络环境下进行测试以检查其有效性十分重要，学界和工业界的研究人员均对此问题进行了大量研究。
 
-Mario Hock等人在其文章[8]中对新提出并已经得到广泛应用的拥塞控制算法BBR在带宽（Throughput）、排队延迟（Queuing delay）、丢包率（Packet loss）和公平性（Fairness）等几个方面进行了独立而深入的测试与分析。由于他们已经对包含BBR在内的常用的拥塞控制算法的底层进行了深入分析，故本文便从上层应用的角度来分析拥塞控制算法的有效性。
+Mario Hock等人在其研究中[8]对新提出并已经得到广泛应用的拥塞控制算法BBR在带宽（Throughput）、排队延迟（Queuing delay）、丢包率（Packet loss）和公平性（Fairness）等几个方面进行了独立而深入的测试与分析。由于他们已经对包含BBR在内的常用的拥塞控制算法的底层进行了深入分析，故本文便从上层应用的角度来分析拥塞控制算法的有效性。
 
-Kevin Ong等人在起文章中[9]中对无线网络中的常用拥塞控制算法在进行了详细的测试。然而他们的文章中只有带宽和延迟两个测试项目，并不能完全反应算法的真实性能。
+Kevin Ong等人在其研究中[9]中对无线网络中的常用拥塞控制算法在进行了详细的测试。然而他们的文章中只有带宽和延迟两个测试项目，并不能完全反应算法的真实性能。
+
+TAN Nguyen等人在其研究[11]中引入了NS-2模拟器以深入分析算法的性能差异。然而，作者的实验是基于DCN的，并不能反应这些算法在因特网中的表现。Thomas Lukaseder等人在其研究中[10]使用NetFPGA给测试网络引入可控的丢包率，并研究了New Reno、Scalable、HighSpeed、H-TCP、BIC和CUBIC等算法在不同丢包率下的性能差异，并分析差异的的成因。然而，作者的实验是基于国有的教育网，其结论同样并不适用与因特网。
+
+论文发表时间较早的有Callegari等人的研究[12]，对Linux 2.6内核所包含的13种拥塞控制算法均进行了测试；以及LA Grieco等人所做的研究[13]，其中引入了模拟测试和场景测试的概念。他们的研究方案与结论对我进行本次研究给予了重要的参考。
 
 ## 三、测试方案
 
@@ -135,3 +139,7 @@ Kevin Ong等人在起文章中[9]中对无线网络中的常用拥塞控制算�
 7. Feknous M, Houdoin T, Le Guyader B, et al. Internet traffic analysis: A case study from two major European operators[C]//Computers and Communication (ISCC), 2014 IEEE Symposium on. IEEE, 2014: 1-7.
 8. Hock M, Bless R, Zitterbart M. Experimental evaluation of BBR congestion control[C]//Network Protocols (ICNP), 2017 IEEE 25th International Conference on. IEEE, 2017: 1-10.
 9. Ong K, Murray D, McGill T. Large-Sample comparison of TCP congestion control mechanisms over wireless networks[C]//Advanced Information Networking and Applications Workshops (WAINA), 2016 30th International Conference on. IEEE, 2016: 420-426.
+10. Lukaseder T, Bradatsch L, Erb B, et al. A comparison of TCP congestion control algorithms in 10G networks[C]//Local Computer Networks (LCN), 2016 IEEE 41st Conference on. IEEE, 2016: 706-714.
+11. Nguyen T A N, Gangadhar S, Sterbenz J P G. Performance Evaluation of TCP Congestion Control Algorithms in Data Center Networks[C]//Proceedings of the 11th International Conference on Future Internet Technologies. ACM, 2016: 21-28.
+12. Callegari C, Giordano S, Pagano M, et al. Behavior analysis of TCP Linux variants[J]. Computer Networks, 2012, 56(1): 462-476.
+13. Grieco L A, Mascolo S. Performance evaluation and comparison of Westwood+, New Reno, and Vegas TCP congestion control[J]. ACM SIGCOMM Computer Communication Review, 2004, 34(2): 25-38.
