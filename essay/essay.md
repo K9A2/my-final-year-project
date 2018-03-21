@@ -10,6 +10,9 @@
     - [二、相关研究综述](#%E4%BA%8C%E3%80%81%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0)
         - [本章引论](#%E6%9C%AC%E7%AB%A0%E5%BC%95%E8%AE%BA)
         - [TCP拥塞控制的基本概念](#tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)
+            - [拥塞的来源与拥塞窗口](#%E6%8B%A5%E5%A1%9E%E7%9A%84%E6%9D%A5%E6%BA%90%E4%B8%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3)
+            - [AIMD](#aimd)
+            - [慢开始、拥塞避免、快重传和快恢复](#%E6%85%A2%E5%BC%80%E5%A7%8B%E3%80%81%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E3%80%81%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D)
         - [本文所涉及到的TCP拥塞算法](#%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95)
         - [TCP拥塞算法性能测试相关研究](#tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
     - [三、测试方案](#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
@@ -78,6 +81,20 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 ### TCP拥塞控制的基本概念
 
+#### 拥塞的来源与拥塞窗口
+
+由于TCP采用了有连接的方式来传输数据，所以每一条连接以及其上的数据就可以抽象地描述为一个“流（Flow）”。而在实际的传输过程中，一条TCP流中的数据，从源节点到目的节点往往会需要经过多次转发。而在这个转发的过程中，由于转发节点（主要是各种路由器和交换机）的处理能力有限，需要把收到的数据进行缓存后，在处理能力许可的情况下再行处理。那么，在这个等待处理的过程中，流中的数据包将不可避免地在此处产生拥塞。
+
+如果数据的发送方没有采用拥塞避免机制，那么由于发送方无法在连接超时之前收到被堵塞在链路中的数据包的确认（Acknowledgement），那么它将认为此数据包已在途中丢失，并重传（Retransmit ）此数据包。这样，就会进一步加重已经产生的拥塞，并最终导致网络死锁。
+
+而在启用了拥塞控制算的通信双方中，发送方将会维护一个类似于滑动窗口的拥塞窗口（Congestion Window，在Linux内核代码中缩写为cwnd）,用来限制已发送但未确认的数据包的数量。当cwnd < ssthresh（Slow Start Threshold，慢启动阈值，由网络状态设定）时，发送方就会认为网络中发生了拥堵，并进入拥塞避免（Congestion Avoidance）状态，调用设定的拥塞避免算法以减轻网络中的拥堵。
+
+#### AIMD
+
+#### 慢开始、拥塞避免、快重传和快恢复
+
+慢开始（Slow start）、拥塞避免（Congestion Avoidance）、快重传（Fast Retransmit）和快恢复（Fast Recovery）是TCP拥塞控制的重要概念。
+
 ### 本文所涉及到的TCP拥塞算法
 
 ### TCP拥塞算法性能测试相关研究
@@ -138,8 +155,15 @@ TAN Nguyen等人在其研究[11]中引入了NS-2模拟器以深入分析算法�
 6. Gerla M, Sanadidi M Y, Wang R, et al. TCP Westwood: Congestion window control using bandwidth estimation[C]//Global Telecommunications Conference, 2001. GLOBECOM'01. IEEE. IEEE, 2001, 3: 1698-1702.
 7. Feknous M, Houdoin T, Le Guyader B, et al. Internet traffic analysis: A case study from two major European operators[C]//Computers and Communication (ISCC), 2014 IEEE Symposium on. IEEE, 2014: 1-7.
 8. Hock M, Bless R, Zitterbart M. Experimental evaluation of BBR congestion control[C]//Network Protocols (ICNP), 2017 IEEE 25th International Conference on. IEEE, 2017: 1-10.
-9. Ong K, Murray D, McGill T. Large-Sample comparison of TCP congestion control mechanisms over wireless networks[C]//Advanced Information Networking and Applications Workshops (WAINA), 2016 30th International Conference on. IEEE, 2016: 420-426.
+9. Ong K, Murray D, McGill T. Large-Sample comparison of TCP congestion control mechanisms over wireless networks[C]//Advanced Information Networking and Applications Workshops (WAINA), 2016 30th International Conference on. IEEE,Brakmo L S, Peterson L L. TCP Vegas: End to end congestion avoidance on a global Internet[J]. IEEE Journal on selected Areas in communications, 1995, 13(8): 1465-1480. 2016: 420-426.
 10. Lukaseder T, Bradatsch L, Erb B, et al. A comparison of TCP congestion control algorithms in 10G networks[C]//Local Computer Networks (LCN), 2016 IEEE 41st Conference on. IEEE, 2016: 706-714.
 11. Nguyen T A N, Gangadhar S, Sterbenz J P G. Performance Evaluation of TCP Congestion Control Algorithms in Data Center Networks[C]//Proceedings of the 11th International Conference on Future Internet Technologies. ACM, 2016: 21-28.
 12. Callegari C, Giordano S, Pagano M, et al. Behavior analysis of TCP Linux variants[J]. Computer Networks, 2012, 56(1): 462-476.
 13. Grieco L A, Mascolo S. Performance evaluation and comparison of Westwood+, New Reno, and Vegas TCP congestion control[J]. ACM SIGCOMM Computer Communication Review, 2004, 34(2): 25-38.
+14. RFC 793, https://tools.ietf.org/html/rfc793
+15. RFC 2001, https://tools.ietf.org/html/rfc2001
+16. Jacobson V. Congestion avoidance and control[C]//ACM SIGCOMM computer communication review. ACM, 1988, 18(4): 314-329.
+17. Floyd S, Gurtov A, Henderson T. The NewReno modification to TCP's fast recovery algorithm[J]. 2004.
+18. Brakmo L S, Peterson L L. TCP Vegas: End to end congestion avoidance on a global Internet[J]. IEEE Journal on selected Areas in communications, 1995, 13(8): 1465-1480.
+19. Ha S, Rhee I, Xu L. CUBIC: a new TCP-friendly high-speed TCP variant[J]. ACM SIGOPS operating systems review, 2008, 42(5): 64-74.
+20. Xu L, Harfoush K, Rhee I. Binary increase congestion control (BIC) for fast long-distance networks[C]//INFOCOM 2004. Twenty-third AnnualJoint Conference of the IEEE Computer and Communications Societies. IEEE, 2004, 4: 2514-2524.
