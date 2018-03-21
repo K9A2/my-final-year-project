@@ -11,7 +11,7 @@
         - [本章引论](#%E6%9C%AC%E7%AB%A0%E5%BC%95%E8%AE%BA)
         - [TCP拥塞控制的基本概念](#tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)
         - [本文所涉及到的TCP拥塞算法简介](#%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B)
-        - [TCP拥塞算法性能测试研究综述](#tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0)
+        - [TCP拥塞算法性能测试相关研究](#tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
     - [三、测试方案](#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
         - [性能标准](#%E6%80%A7%E8%83%BD%E6%A0%87%E5%87%86)
         - [网络拓扑](#%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91)
@@ -80,7 +80,13 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 ### 本文所涉及到的TCP拥塞算法简介
 
-### TCP拥塞算法性能测试研究综述
+### TCP拥塞算法性能测试相关研究
+
+由于对TCP拥塞控制算法在不同网络环境下进行测试以检查其有效性十分重要，学界和工业界的研究人员均对此问题做出了大量研究。
+
+Mario Hock等人在其文章[8]中对新提出并已经得到广泛应用的拥塞控制算法BBR在带宽（Throughput）、排队延迟（Queuing delay）、丢包率（Packet loss）和公平性（Fairness）等几个方面进行了独立而深入的测试与分析。由于他们已经对包含BBR在内的常用的拥塞控制算法的底层进行了深入分析，故本文便从上层应用的角度来分析拥塞控制算法的有效性。
+
+Kevin Ong等人在起文章中[9]中对无线网络中的常用拥塞控制算法在进行了详细的测试。然而他们的文章中只有带宽和延迟两个测试项目，并不能完全反应算法的真实性能。
 
 ## 三、测试方案
 
@@ -127,4 +133,5 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 5. Nguyen T A N, Gangadhar S, Sterbenz J P G. Performance Evaluation of TCP Congestion Control Algorithms in Data Center Networks[C]//Proceedings of the 11th International Conference on Future Internet Technologies. ACM, 2016: 21-28.
 6. Gerla M, Sanadidi M Y, Wang R, et al. TCP Westwood: Congestion window control using bandwidth estimation[C]//Global Telecommunications Conference, 2001. GLOBECOM'01. IEEE. IEEE, 2001, 3: 1698-1702.
 7. Feknous M, Houdoin T, Le Guyader B, et al. Internet traffic analysis: A case study from two major European operators[C]//Computers and Communication (ISCC), 2014 IEEE Symposium on. IEEE, 2014: 1-7.
-
+8. Hock M, Bless R, Zitterbart M. Experimental evaluation of BBR congestion control[C]//Network Protocols (ICNP), 2017 IEEE 25th International Conference on. IEEE, 2017: 1-10.
+9. Ong K, Murray D, McGill T. Large-Sample comparison of TCP congestion control mechanisms over wireless networks[C]//Advanced Information Networking and Applications Workshops (WAINA), 2016 30th International Conference on. IEEE, 2016: 420-426.
