@@ -14,6 +14,19 @@
             - [2.2.2 慢开始、拥塞避免、快重传和快恢复](#222-%E6%85%A2%E5%BC%80%E5%A7%8B%E3%80%81%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E3%80%81%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D)
             - [2.2.3 AIMD](#223-aimd)
         - [2.3 本文所涉及到的TCP拥塞算法](#23-%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95)
+            - [2.3.1 Vegas 1995](#231-vegas-1995)
+            - [2.3.2 New Reno 1999](#232-new-reno-1999)
+            - [2.3.3 Westwood 2002](#233-westwood-2002)
+            - [2.3.4 HighSpeed 2003](#234-highspeed-2003)
+            - [2.3.5 Scalable 2003](#235-scalable-2003)
+            - [2.3.6 Veno 2003](#236-veno-2003)
+            - [2.3.7 BIC 2004](#237-bic-2004)
+            - [2.3.8 H-TCP 2004](#238-h-tcp-2004)
+            - [2.3.9 Hybla 2004](#239-hybla-2004)
+            - [2.3.10 Illinois 2006](#2310-illinois-2006)
+            - [2.3.11 YeAH 2007](#2311-yeah-2007)
+            - [2.3.12 CUBIC 2008](#2312-cubic-2008)
+            - [2.3.13 BBR 2016](#2313-bbr-2016)
         - [2.4 TCP拥塞算法性能测试相关研究](#24-tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
     - [3. 测试方案](#3-%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
         - [3.1 性能标准](#31-%E6%80%A7%E8%83%BD%E6%A0%87%E5%87%86)
@@ -83,11 +96,7 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 #### 2.2.1 拥塞的来源与拥塞窗口
 
-由于TCP采用了有连接的方式来传输数据，所以每一条连接以及其上的数据就可以抽象地描述为一个“流（Flow）”。而在实际的传输过程中，一条TCP流中的数据，从源节点到目的节点往往会需要经过多次转发。而在这个转发的过程中，由于转发节点（主要是各种路由器和交换机）的处理能力有限，需要把收到的数据进行缓存后，在处理能力许可的情况下再行处理。那么，在这个等待处理的过程中，流中的数据包将不可避免地在此处产生拥塞。
-
-如果数据的发送方没有采用拥塞避免机制，那么由于发送方无法在连接超时之前收到被堵塞在链路中的数据包的确认（Acknowledgement），那么它将认为此数据包已在途中丢失，并重传（Retransmit）此数据包。这样，就会进一步加重已经产生的拥塞，并最终导致网络死锁。
-
-而在启用了拥塞控制算的通信双方中，发送方将会维护一个类似于滑动窗口的拥塞窗口（Congestion Window，在Linux内核代码中缩写为cwnd）,用来限制已发送但未确认的数据包的数量。当cwnd < ssthresh（Slow Start Threshold，慢启动阈值，由网络状态设定）时，发送方就会认为网络中发生了拥堵，并进入拥塞避免（Congestion Avoidance）状态，调用设定的拥塞避免算法以减轻网络中的拥堵。
+由于TCP采用了有连接的方式来传输数据，所以每一条连接以及其上的数据就可以抽象地描述为一条TCP流。在实际的传输过程中，一条TCP流中的数据，从源节点到目的节点往往需要经过多次转发。而在这个转发的过程中，由于转发节点（瓶颈节点）的处理能力有限，需要把收到的数据进行缓存后，在处理能力许可的情况下再行处理。那么，在这个等待处理的过程中，流中的数据包将不可避免地在此处产生拥塞。如果数据的发送方没有采用拥塞避免机制，则仍会在网络出现拥塞之后向网络中注入大量数据包，进一步加重瓶颈节点的拥塞情况。而在启用了拥塞控制算的TCP链接中，发送方将会维护一个类似于滑动窗口的拥塞窗口（Congestion Window，cwnd），用来限制已发送但未确认的数据包的数量。
 
 #### 2.2.2 慢开始、拥塞避免、快重传和快恢复
 
@@ -106,7 +115,41 @@ TCP（Transmission Control Protocol）协议是一种有连接的运输层协议
 
 #### 2.2.3 AIMD
 
+AIMD（Additive-Increase/Multiplicative-Decrease，加法增加、乘法减小）算法，是一种用来相对公平地分配链路带宽的反馈性算法，是一种对上节所属四种算法的高度抽象。其特点是，不存在拥塞时，使用加法来缓慢地增加拥塞窗口的大小；当网络出现拥塞是，乘法地减小拥塞窗口，以降低网络的拥塞程度。当网路中有的流都采用AIMD算法时，每一个流最终都将获得相等的带宽份额。通常而言，发送者会在每一个RTT长度的时间中让拥塞窗口增加一个MSS的大小。
+
 ### 2.3 本文所涉及到的TCP拥塞算法
+
+#### 2.3.1 Vegas 1995
+
+Vegas[3]是一个基于延迟的拥塞控制算法，即通过连续计算最新RTT值与基准RTT值的相对大小来确定合适的数据发送速率。当最新的RTT值与基准RTT值有较大幅度的增加时，就认为网络中将要出现拥塞，己方需要降低数据发送速率以缓解网络拥塞。当最新RTT值与基准RTT值相对下降时，认为网络空闲，己方需要增加数据发送速率。
+
+#### 2.3.2 New Reno 1999
+
+New Reno[2]是Reno[23]的最新改进版，主要针对后者所引入的快恢复算法作出了改进。在Reno的控制下，发送方会在重传计时器超时或者收到三个重复的确认的情况下重传一个数据包。这样的话，如果在多个数据包同时丢失，Reno就会频繁调用快重传算法[24]，使得拥塞窗口迅速减小[25]。New Reno算法则会在把所有从进入快恢复阶段开始的所有未被确认的数据包都被确认之后才会退出快恢复阶段，从而避免了以上问题。
+
+#### 2.3.3 Westwood 2002
+
+Westwood[26]是一种基于延迟和丢包的拥塞控制算法，其使用RTT以及此时间段内被发送的数据包大小作为计算可用最大带宽的依据。当数据包丢失时，拥塞窗口和慢启动门限会被设置得贴近当前带宽的估计值。这样就可以减小快恢复阶段所需要的时间。由于无线网络中常常丢包的现象，结合此算法恢复时间较短的特点，故此算法常用在无线网络中。
+
+#### 2.3.4 HighSpeed 2003
+
+#### 2.3.5 Scalable 2003
+
+#### 2.3.6 Veno 2003
+
+#### 2.3.7 BIC 2004
+
+#### 2.3.8 H-TCP 2004
+
+#### 2.3.9 Hybla 2004
+
+#### 2.3.10 Illinois 2006
+
+#### 2.3.11 YeAH 2007
+
+#### 2.3.12 CUBIC 2008
+
+#### 2.3.13 BBR 2016
 
 ### 2.4 TCP拥塞算法性能测试相关研究
 
@@ -180,3 +223,7 @@ TAN Nguyen等人在其研究[11]中引入了NS-2模拟器以深入分析算法�
 20. Xu L, Harfoush K, Rhee I. Binary increase congestion control (BIC) for fast long-distance networks[C]//INFOCOM 2004. Twenty-third AnnualJoint Conference of the IEEE Computer and Communications Societies. IEEE, 2004, 4: 2514-2524.
 21. RFC 5681, https://tools.ietf.org/html/rfc5681
 22. Paxson V. End-to-end Internet packet dynamics[C]//ACM SIGCOMM Computer Communication Review. ACM, 1997, 27(4): 139-152.
+23. Fall K, Floyd S. Simulation-based comparisons of Tahoe, Reno and SACK TCP[J]. ACM SIGCOMM Computer Communication Review, 1996, 26(3): 5-21.
+24. Hoe J C. Start-up dynamics of TCP's congestion control and avoidance schemes[D]. Massachusetts Institute of Technology, 1995.
+25. Floyd S. TCP and successive fast retransmits[R]. Technical report, October 1994. ftp://ftp. ee. lbl. gov/papers/fastretrans. ps, 1995.
+26. Gerla M, Sanadidi M Y, Wang R, et al. TCP Westwood: Congestion window control using bandwidth estimation[C]//Global Telecommunications Conference, 2001. GLOBECOM'01. IEEE. IEEE, 2001, 3: 1698-1702.
