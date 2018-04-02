@@ -39,7 +39,7 @@ def main():
     names = ["BBR", "CUBIC", "Reno", "Veno", "Westwood"]
 
     # Path to folder contains log files
-    file_path = "../lab-record/result/wireless/one-client/2.4g/tx-20mw/"
+    file_path = "../lab-record/result/wireless/one-client/2.4g/tx-15mw/"
 
     # Round name in one evaluation
     rounds = ["round_0/", "round_1/", "round_2/"]
