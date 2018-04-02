@@ -125,9 +125,15 @@ AIMD（Additive-Increase/Multiplicative-Decrease，加法增加、乘法减小�
 
 #### 2.3.1 Vegas 1995
 
+Vegas[3]是一个基于延迟的拥塞控制算法，即通过连续计算最新RTT值与基准RTT值的相对大小来确定合适的数据发送速率。当最新的RTT值与基准RTT值有较大幅度的增加时，就认为网络中将要出现拥塞，己方需要降低数据发送速率以缓解网络拥塞。当最新RTT值与基准RTT值相对下降时，认为网络空闲，己方需要增加数据发送速率。
+
 #### 2.3.2 New Reno 1999
 
+New Reno[2]是Reno[23]的最新改进版，主要针对后者所引入的快恢复算法作出了改进。在Reno的控制下，发送方会在重传计时器超时或者收到三个重复的确认的情况下重传一个数据包。这样的话，如果在多个数据包同时丢失，Reno就会频繁调用快重传算法[24]，使得拥塞窗口迅速减小[25]。New Reno算法则会在把所有从进入快恢复阶段开始的所有未被确认的数据包都被确认之后才会退出快恢复阶段，从而避免了以上问题。
+
 #### 2.3.3 Westwood 2002
+
+Westwood[26]是一种基于延迟和丢包的拥塞控制算法，其使用RTT以及此时间段内被发送的数据包大小作为计算可用最大带宽的依据。当数据包丢失时，拥塞窗口和慢启动门限会被设置得贴近当前带宽的估计值。这样就可以减小快恢复阶段所需要的时间。由于无线网络中常常丢包的现象，结合此算法恢复时间较短的特点，故此算法常用在无线网络中。
 
 #### 2.3.4 HighSpeed 2003
 
@@ -221,3 +227,7 @@ TAN Nguyen等人在其研究[11]中引入了NS-2模拟器以深入分析算法�
 20. Xu L, Harfoush K, Rhee I. Binary increase congestion control (BIC) for fast long-distance networks[C]//INFOCOM 2004. Twenty-third AnnualJoint Conference of the IEEE Computer and Communications Societies. IEEE, 2004, 4: 2514-2524.
 21. RFC 5681, https://tools.ietf.org/html/rfc5681
 22. Paxson V. End-to-end Internet packet dynamics[C]//ACM SIGCOMM Computer Communication Review. ACM, 1997, 27(4): 139-152.
+23. Fall K, Floyd S. Simulation-based comparisons of Tahoe, Reno and SACK TCP[J]. ACM SIGCOMM Computer Communication Review, 1996, 26(3): 5-21.
+24. Hoe J C. Start-up dynamics of TCP's congestion control and avoidance schemes[D]. Massachusetts Institute of Technology, 1995.
+25. Floyd S. TCP and successive fast retransmits[R]. Technical report, October 1994. ftp://ftp. ee. lbl. gov/papers/fastretrans. ps, 1995.
+26. Gerla M, Sanadidi M Y, Wang R, et al. TCP Westwood: Congestion window control using bandwidth estimation[C]//Global Telecommunications Conference, 2001. GLOBECOM'01. IEEE. IEEE, 2001, 3: 1698-1702.
