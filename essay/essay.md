@@ -1,52 +1,55 @@
 # Extensive Evaluation of TCP Congestion Control Algorithms under Varied Network Environments
 
-- [Extensive Evaluation of TCP Congestion Control Algorithms under Varied Network Environments](#extensive-evaluation-of-tcp-congestion-control-algorithms-under-varied-network-environments)
-    - [1. 绪论](#1-%E7%BB%AA%E8%AE%BA)
-        - [1.1 论文研究背景](#11-%E8%AE%BA%E6%96%87%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF)
-        - [1.2 论文主要研究内容](#12-%E8%AE%BA%E6%96%87%E4%B8%BB%E8%A6%81%E7%A0%94%E7%A9%B6%E5%86%85%E5%AE%B9)
-        - [1.3 论文的创新与贡献](#13-%E8%AE%BA%E6%96%87%E7%9A%84%E5%88%9B%E6%96%B0%E4%B8%8E%E8%B4%A1%E7%8C%AE)
-        - [1.4 论文各章内容安排](#14-%E8%AE%BA%E6%96%87%E5%90%84%E7%AB%A0%E5%86%85%E5%AE%B9%E5%AE%89%E6%8E%92)
-        - [1.5 术语说明](#15-%E6%9C%AF%E8%AF%AD%E8%AF%B4%E6%98%8E)
-    - [2. 相关研究综述](#2-%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0)
-        - [2.1 本章引论](#21-%E6%9C%AC%E7%AB%A0%E5%BC%95%E8%AE%BA)
-        - [2.2 TCP拥塞控制的基本概念](#22-tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)
-            - [2.2.1 拥塞的来源与拥塞窗口](#221-%E6%8B%A5%E5%A1%9E%E7%9A%84%E6%9D%A5%E6%BA%90%E4%B8%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3)
-            - [2.2.2 慢开始、拥塞避免、快重传和快恢复](#222-%E6%85%A2%E5%BC%80%E5%A7%8B%E3%80%81%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E3%80%81%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D)
-            - [2.2.3 AIMD](#223-aimd)
-        - [2.3 本文所涉及到的TCP拥塞算法](#23-%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95)
-            - [2.3.1 Vegas 1995](#231-vegas-1995)
-            - [2.3.2 New Reno 1999](#232-new-reno-1999)
-            - [2.3.3 Westwood 2002](#233-westwood-2002)
-            - [2.3.4 HighSpeed 2003](#234-highspeed-2003)
-            - [2.3.5 Scalable 2003](#235-scalable-2003)
-            - [2.3.6 Veno 2003](#236-veno-2003)
-            - [2.3.7 BIC 2004](#237-bic-2004)
-            - [2.3.8 H-TCP 2004](#238-h-tcp-2004)
-            - [2.3.9 Hybla 2004](#239-hybla-2004)
-            - [2.3.10 Illinois 2006](#2310-illinois-2006)
-            - [2.3.11 YeAH 2007](#2311-yeah-2007)
-            - [2.3.12 CUBIC 2008](#2312-cubic-2008)
-            - [2.3.13 BBR 2016](#2313-bbr-2016)
-        - [2.4 TCP拥塞算法性能测试相关研究](#24-tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
-    - [3. 测试方案](#3-%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
-        - [3.1 性能标准](#31-%E6%80%A7%E8%83%BD%E6%A0%87%E5%87%86)
-        - [3.2 网络拓扑](#32-%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91)
-        - [3.3 测试工具](#33-%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7)
-        - [3.4 网络场景](#34-%E7%BD%91%E7%BB%9C%E5%9C%BA%E6%99%AF)
-    - [4. 基于有线网络的性能测试结果与分析](#4-%E5%9F%BA%E4%BA%8E%E6%9C%89%E7%BA%BF%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E4%B8%8E%E5%88%86%E6%9E%90)
-        - [4.1 性能基准测试](#41-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)
-        - [4.2 TCP性能测试](#42-tcp%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95)
-        - [4.3 网络应用测试](#43-%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95)
-        - [4.4 算法间公平性测试](#44-%E7%AE%97%E6%B3%95%E9%97%B4%E5%85%AC%E5%B9%B3%E6%80%A7%E6%B5%8B%E8%AF%95)
-        - [4.5 本章小结](#45-%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93)
-    - [5. 基于无线网络的性能测试结果与分析](#5-%E5%9F%BA%E4%BA%8E%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E4%B8%8E%E5%88%86%E6%9E%90)
-        - [5.1 性能基准测试](#51-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)
-        - [5.2 TCP性能测试](#52-tcp%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95)
-        - [5.3 网络应用测试](#53-%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95)
-        - [5.4 算法间公平性测试](#54-%E7%AE%97%E6%B3%95%E9%97%B4%E5%85%AC%E5%B9%B3%E6%80%A7%E6%B5%8B%E8%AF%95)
-        - [5.5 本章小结](#55-%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93)
-    - [6. 结论](#6-%E7%BB%93%E8%AE%BA)
-    - [参考文献](#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE)
+<!-- TOC -->
+
+- [1. 绪论](#1-%E7%BB%AA%E8%AE%BA)
+    - [1.1 论文研究背景](#11-%E8%AE%BA%E6%96%87%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF)
+    - [1.2 论文主要研究内容](#12-%E8%AE%BA%E6%96%87%E4%B8%BB%E8%A6%81%E7%A0%94%E7%A9%B6%E5%86%85%E5%AE%B9)
+    - [1.3 论文的创新与贡献](#13-%E8%AE%BA%E6%96%87%E7%9A%84%E5%88%9B%E6%96%B0%E4%B8%8E%E8%B4%A1%E7%8C%AE)
+    - [1.4 论文各章内容安排](#14-%E8%AE%BA%E6%96%87%E5%90%84%E7%AB%A0%E5%86%85%E5%AE%B9%E5%AE%89%E6%8E%92)
+    - [1.5 术语说明](#15-%E6%9C%AF%E8%AF%AD%E8%AF%B4%E6%98%8E)
+- [2. 相关研究综述](#2-%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0)
+    - [2.1 本章引论](#21-%E6%9C%AC%E7%AB%A0%E5%BC%95%E8%AE%BA)
+    - [2.2 TCP拥塞控制的基本概念](#22-tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)
+        - [2.2.1 拥塞的来源与拥塞窗口](#221-%E6%8B%A5%E5%A1%9E%E7%9A%84%E6%9D%A5%E6%BA%90%E4%B8%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3)
+        - [2.2.2 慢开始、拥塞避免、快重传和快恢复](#222-%E6%85%A2%E5%BC%80%E5%A7%8B%E3%80%81%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E3%80%81%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D)
+        - [2.2.3 AIMD](#223-aimd)
+    - [2.3 本文所涉及到的TCP拥塞算法](#23-%E6%9C%AC%E6%96%87%E6%89%80%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95)
+        - [2.3.1 Vegas 1995](#231-vegas-1995)
+        - [2.3.2 New Reno 1999](#232-new-reno-1999)
+        - [2.3.3 Westwood 2002](#233-westwood-2002)
+        - [2.3.4 HighSpeed 2003](#234-highspeed-2003)
+        - [2.3.5 Scalable 2003](#235-scalable-2003)
+        - [2.3.6 Veno 2003](#236-veno-2003)
+        - [2.3.7 BIC 2004](#237-bic-2004)
+        - [2.3.8 H-TCP 2004](#238-h-tcp-2004)
+        - [2.3.9 Hybla 2004](#239-hybla-2004)
+        - [2.3.10 YeAH 2007](#2310-yeah-2007)
+        - [2.3.11 CUBIC 2008](#2311-cubic-2008)
+        - [2.3.12 Illinois 2008](#2312-illinois-2008)
+        - [2.3.13 BBR 2016](#2313-bbr-2016)
+    - [2.4 TCP拥塞算法性能测试相关研究](#24-tcp%E6%8B%A5%E5%A1%9E%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6)
+- [3. 测试方案](#3-%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88)
+    - [3.1 性能标准](#31-%E6%80%A7%E8%83%BD%E6%A0%87%E5%87%86)
+    - [3.2 网络拓扑](#32-%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91)
+    - [3.3 测试工具](#33-%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7)
+    - [3.4 网络场景](#34-%E7%BD%91%E7%BB%9C%E5%9C%BA%E6%99%AF)
+- [4. 基于有线网络的性能测试结果与分析](#4-%E5%9F%BA%E4%BA%8E%E6%9C%89%E7%BA%BF%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E4%B8%8E%E5%88%86%E6%9E%90)
+    - [4.1 性能基准测试](#41-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)
+    - [4.2 TCP性能测试](#42-tcp%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95)
+    - [4.3 网络应用测试](#43-%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95)
+    - [4.4 算法间公平性测试](#44-%E7%AE%97%E6%B3%95%E9%97%B4%E5%85%AC%E5%B9%B3%E6%80%A7%E6%B5%8B%E8%AF%95)
+    - [4.5 本章小结](#45-%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93)
+- [5. 基于无线网络的性能测试结果与分析](#5-%E5%9F%BA%E4%BA%8E%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E4%B8%8E%E5%88%86%E6%9E%90)
+    - [5.1 性能基准测试](#51-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)
+    - [5.2 TCP性能测试](#52-tcp%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95)
+    - [5.3 网络应用测试](#53-%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95)
+    - [5.4 算法间公平性测试](#54-%E7%AE%97%E6%B3%95%E9%97%B4%E5%85%AC%E5%B9%B3%E6%80%A7%E6%B5%8B%E8%AF%95)
+    - [5.5 本章小结](#55-%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93)
+- [6. 结论](#6-%E7%BB%93%E8%AE%BA)
+- [参考文献](#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE)
+
+<!-- /TOC -->
 
 ## 1. 绪论
 
@@ -133,23 +136,43 @@ Westwood[26]是一种基于延迟和丢包的拥塞控制算法，其使用RTT�
 
 #### 2.3.4 HighSpeed 2003
 
+HighSpeed[27]是一个基于丢包的拥塞控制算法，主要针对具有高BDP（Bandwidth Delay Product，带宽延迟积）特性的网络进行了优化。它的特点是使用加法因子和乘法因子以及当前的丢包率等来作为参数，以控制AIMD过程中拥塞窗口的大小。
+
 #### 2.3.5 Scalable 2003
+
+Scalable[28]是Reno经过简单修改之后的结果。在Scalable算法中，加法因子被修改为0.01而乘法因子被修改为0.875，以优化该算法在高速广域网中传输大量数据的性能表现。
 
 #### 2.3.6 Veno 2003
 
+Veno[35]
+
 #### 2.3.7 BIC 2004
+
+BIC[29]
 
 #### 2.3.8 H-TCP 2004
 
+H-TCP[34]
+
 #### 2.3.9 Hybla 2004
 
-#### 2.3.10 Illinois 2006
+Hybla[33]
 
-#### 2.3.11 YeAH 2007
+#### 2.3.10 YeAH 2007
 
-#### 2.3.12 CUBIC 2008
+YeAH[31]
+
+#### 2.3.11 CUBIC 2008
+
+CUBIC[30]
+
+#### 2.3.12 Illinois 2008
+
+Illinois[32]
 
 #### 2.3.13 BBR 2016
+
+BBR[1]
 
 ### 2.4 TCP拥塞算法性能测试相关研究
 
@@ -227,3 +250,12 @@ TAN Nguyen等人在其研究[11]中引入了NS-2模拟器以深入分析算法�
 24. Hoe J C. Start-up dynamics of TCP's congestion control and avoidance schemes[D]. Massachusetts Institute of Technology, 1995.
 25. Floyd S. TCP and successive fast retransmits[R]. Technical report, October 1994. ftp://ftp. ee. lbl. gov/papers/fastretrans. ps, 1995.
 26. Gerla M, Sanadidi M Y, Wang R, et al. TCP Westwood: Congestion window control using bandwidth estimation[C]//Global Telecommunications Conference, 2001. GLOBECOM'01. IEEE. IEEE, 2001, 3: 1698-1702.
+27. RFC 3649, https://buildbot.tools.ietf.org/html/rfc3649
+28. Kelly T. Scalable TCP: Improving performance in highspeed wide area networks[J]. ACM SIGCOMM computer communication Review, 2003, 33(2): 83-91.
+29. Xu L, Harfoush K, Rhee I. Binary increase congestion control (BIC) for fast long-distance networks[C]//INFOCOM 2004. Twenty-third AnnualJoint Conference of the IEEE Computer and Communications Societies. IEEE, 2004, 4: 2514-2524.
+30. Ha S, Rhee I, Xu L. CUBIC: a new TCP-friendly high-speed TCP variant[J]. ACM SIGOPS operating systems review, 2008, 42(5): 64-74.
+31. Baiocchi A, Castellani A P, Vacirca F. YeAH-TCP: yet another highspeed TCP[C]//Proc. PFLDnet. 2007, 7: 37-42.
+32. Liu S, Başar T, Srikant R. TCP-Illinois: A loss-and delay-based congestion control algorithm for high-speed networks[J]. Performance Evaluation, 2008, 65(6-7): 417-440.
+33. Caini C, Firrincieli R. TCP Hybla: a TCP enhancement for heterogeneous networks[J]. International journal of satellite communications and networking, 2004, 22(5): 547-566.
+34. Leith D, Shorten R. H-TCP: TCP for high-speed and long-distance networks[C]//Proceedings of PFLDnet. 2004, 2004.
+35. Fu C P, Liew S C. TCP Veno: TCP enhancement for transmission over wireless access networks[J]. IEEE Journal on selected areas in communications, 2003, 21(2): 216-228.
