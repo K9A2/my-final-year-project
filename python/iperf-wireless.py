@@ -39,7 +39,7 @@ def main():
     names = ["BBR", "CUBIC", "Reno", "Veno", "Westwood"]
 
     # Path to folder contains log files
-    file_path = "../lab-record/result/wireless/one-client/2.4g/tx-15mw/"
+    file_path = "../lab-record/result/wireless/one-client/2.4g/tx-5mw/"
 
     # Round name in one evaluation
     rounds = ["round_0/", "round_1/", "round_2/"]
@@ -119,6 +119,7 @@ def main():
     fig_rtt = plt.figure("rtt")
     ax = fig_rtt.add_subplot(111)
     ax.set_xscale("log")
+    plt.grid(linestyle = "--", linewidth=2) 
     # Calculate and print CDF figure
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["rtt"])
@@ -128,7 +129,10 @@ def main():
             yvals,
             linewidth=4,
             label=names[i],
-            color=colors[i]
+            color=colors[i],
+            marker=">",
+            markevery=100,
+            markersize=10
         )
     # Draw benchmark line and other information
     plt.axvline(benchmark["rtt"], linewidth=3, color="black")
@@ -139,7 +143,7 @@ def main():
     plt.yticks(fontsize=font_size)
     # plt.xlim(0, 4000)
     # plt.ylim(0, 4000)
-    plt.legend(fontsize=35, numpoints=100, loc='lower right')
+    plt.legend(fontsize=35, loc='lower right')
 
     plt.subplots_adjust(left=0.10, right=0.95, top=0.95, bottom=0.15)
 
@@ -148,6 +152,7 @@ def main():
     # ax = fig_throughput.add_subplot(111)
     # ax.set_xscale("log")
     # Calculate and print CDF figure
+    plt.grid(linestyle = "--", linewidth=2) 
     for i in range(len(algorithms)):
         sorted_data = np.sort(result[algorithms[i]]["throughput"])
         yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
@@ -156,7 +161,7 @@ def main():
             yvals,
             linewidth=4,
             label=names[i],
-            color=colors[i]
+            color=colors[i],
         )
     # plot benchmark line
     plt.axvline(benchmark["throughput"], linewidth=3, color="black")
