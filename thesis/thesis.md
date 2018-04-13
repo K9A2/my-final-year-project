@@ -317,7 +317,7 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 #### 4.3.2 WAN 1
 
-![curl-wan1.png](./curl-wan2.png)
+![curl-wan1.png](./curl-wan1.png)
 
 #### 4.3.3 WAN 2
 
