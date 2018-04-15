@@ -387,6 +387,92 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 ### 5.2 TCP性能测试
 
+#### 5.2.1 2.4GHz
+
+-   tx-20mw
+    ![2.4g-20mw-rtt.png](./2.4g-20mw-rtt.png)
+    ![2.4g-20mw-throughput.png](./2.4g-20mw-throughput.png)
+    ![2.4g-20mw-retransmits.png](./2.4g-20mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |Veno|59.59|CUBIC|22.52|
+    |NewReno|61.43|NewReno|10.08|
+    |CUBIC|69.42|Veno|7.42|
+    |BBR|73.15|BBR|2.54|
+-   tx-15mw
+    ![2.4g-15mw-rtt.png](./2.4g-15mw-rtt.png)
+    ![2.4g-15mw-throughput.png](./2.4g-15mw-throughput.png)
+    ![2.4g-15mw-retransmits.png](./2.4g-15mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |BBR|59.41|CUBIC|18.89|
+    |CUBIC|60.88|NewReno|8.13|
+    |Veno|87.21|Veno|5.38|
+    |NewReno|106.54|BBR|2.68|
+-   tx-10mw
+    ![2.4g-10mw-rtt.png](./2.4g-10mw-rtt.png)
+    ![2.4g-10mw-throughput.png](./2.4g-10mw-throughput.png)
+    ![2.4g-10mw-retransmits.png](./2.4g-10mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |Veno|122.21|CUBIC|19.27|
+    |NewReno|150.42|Veno|18.32|
+    |BBR|153.94|NewReno|15.10|
+    |CUBIC|172.10|BBR|1.84|
+-   tx-5mw
+    ![2.4g-5mw-rtt.png](./2.4g-5mw-rtt.png)
+    ![2.4g-5mw-throughput.png](./2.4g-5mw-throughput.png)
+    ![2.4g-5mw-retransmits.png](./2.4g-5mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |NewReno|77.45|CUBIC|27.83|
+    |CUBIC|82.88|NewReno|24.39|
+    |Veno|96.95|Veno|16.54|
+    |BBR|109.00|BBR|2.00|
+
+#### 5.2.2 5GHz
+
+-   tx-20mw
+    ![5g-20mw-rtt.png](./5g-20mw-rtt.png)
+    ![5g-20mw-throughput.png](./5g-20mw-throughput.png)
+    ![5g-20mw-retransmits.png](./5g-20mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |NewReno|91.62|CUBIC|20.44|
+    |BBR|103.45|Veno|8.36|
+    |Veno|115.57|NewReno|7.28|
+    |CUBIC|120.53|BBR|3.35|
+-   tx-15mw
+    ![5g-15mw-rtt.png](./5g-15mw-rtt.png)
+    ![5g-15mw-throughput.png](./5g-15mw-throughput.png)
+    ![5g-15mw-retransmits.png](./5g-15mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |Veno|116.20|CUBIC|54.22|
+    |BBR|129.41|Veno|31.19|
+    |CUBIC|144.03|NewReno|19.38|
+    |NewReno|151.96|BBR|5.47|
+-   tx-10mw
+    ![5g-10mw-rtt.png](./5g-10mw-rtt.png)
+    ![5g-10mw-throughput.png](./5g-10mw-throughput.png)
+    ![5g-10mw-retransmits.png](./5g-10mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |BBR|122.55|CUBIC|52.14|
+    |NewReno|129.55|NewReno|24.05|
+    |CUBIC|132.64|Veno|12.80|
+    |Veno|165.64|BBR|4.18|
+-   tx-5mw
+    ![5g-5mw-rtt.png](./5g-5mw-rtt.png)
+    ![5g-5mw-throughput.png](./5g-5mw-throughput.png)
+    ![5g-5mw-retransmits.png](./5g-5mw-retransmits.png)
+    |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
+    |----|-----------------|--|-------------------|
+    |Veno|156.32|CUBIC|56.74|
+    |BBR|158.01|NewReno|17.06|
+    |NewReno|187.11|Veno|5.64|
+    |CUBIC|201.63|BBR|4.48|
+
 ### 5.3 网络应用测试
 
 ### 5.4 算法间公平性测试
