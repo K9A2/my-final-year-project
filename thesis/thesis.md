@@ -257,19 +257,19 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 ![lan-retransmits.png](./lan-retransmits.png)
 
-|算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
-|----|-----------------|--|-------------------|
-|Vegas|1.89|Scalable|89.18|
-|BBR|4.10|H-TCP|89.13|
-|YeAH|6.56|Hybla|89.10|
-|Hybla|7.80|BIC|89.07|
-|NewReno|8.18|CUBIC|88.99|
-|Illinois|8.79|Illinois|88.96|
-|BIC|8.93|HighSpeed|88.93|
-|CUBIC|9.26|NewReno|88.90|
-|H-TCP|9.39|YeAH|88.89|
-|HighSpeed|9.70|BBR|87.94|
-|Scalable|10.39|Vegas|67.90|
+|算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|算法，按平均重传数从小到大排序|平均重传数（单位：包每秒）|
+|----|-----------------|--|-------------------|----|----|
+|Vegas|1.89|Scalable|89.18|Vegas|0.002|
+|BBR|4.10|H-TCP|89.13|YeAH|0.004|
+|YeAH|6.56|Hybla|89.10|H-TCP|0.004|
+|Hybla|7.80|BIC|89.07|HighSpeed|0.004|
+|NewReno|8.18|CUBIC|88.99|BBR|0.004|
+|Illinois|8.79|Illinois|88.96|Scalable|0.005|
+|BIC|8.93|HighSpeed|88.93|Hybla|0.011|
+|CUBIC|9.26|NewReno|88.90|Illinois|0.012|
+|H-TCP|9.39|YeAH|88.89|CUBIC|0.022|
+|HighSpeed|9.70|BBR|87.94|NewReno|0.022|
+|Scalable|10.39|Vegas|67.90|BIC|0.046|
 
 #### 4.2.2 WAN 1
 
@@ -279,19 +279,19 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 ![wan1-retransmits.png](./wan1-retransmits.png)
 
-|算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
-|----|-----------------|--|-------------------|
-|Scalable|30.25|H-TCP|1.02|
-|Illinois|30.42|NewReno|1.02|
-|HighSpeed|30.87|Hybla|1.02|
-|YeAH|30.87|HighSpeed|1.02|
-|Hybla|30.93|Vegas|1.02|
-|BIC|31.09|Illinois|1.02|
-|NewReno|31.20|BIC|1.02|
-|BBR|31.23|CUBIC|1.02|
-|CUBIC|31.42|Scalable|1.02|
-|H-TCP|31.68|BBR|1.02|
-|Vegas|31.79|YeAH|1.02|
+|算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|算法，按平均重传数从小到大排序|平均重传数（单位：包每秒）|
+|----|-----------------|--|-------------------|----|----|
+|Scalable|30.25|H-TCP|1.02|H-TCP|9.19|
+|Illinois|30.42|NewReno|1.02|CUBIC|9.69|
+|HighSpeed|30.87|Hybla|1.02|Vegas|12.94|
+|YeAH|30.87|HighSpeed|1.02|NewReno|14.35|
+|Hybla|30.93|Vegas|1.02|BIC|14.41|
+|BIC|31.09|Illinois|1.02|HighSpeed|15.18|
+|NewReno|31.20|BIC|1.02|Illinois|18.35|
+|BBR|31.23|CUBIC|1.02|Hybla|18.81|
+|CUBIC|31.42|Scalable|1.02|YeAH|43.12|
+|H-TCP|31.68|BBR|1.02|Scalable|44.34|
+|Vegas|31.79|YeAH|1.02|BBR|90.71|
 
 #### 4.2.2 WAN 2
 
@@ -301,19 +301,19 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 ![wan2-retransmits.png](./wan2-retransmits.png)
 
-|算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
-|----|-----------------|--|-------------------|
-|YeAH|244.26|Illinois|56.19|
-|Illinois|244.62|Hybla|52.68|
-|H-TCP|245.72|YeAH|52.19|
-|NewReno|246.52|Scalable|49.01|
-|Scalable|246.78|BIC|46.95|
-|Hybla|247.09|H-TCP|45.56|
-|Vegas|247.61|BBR|44.88|
-|BBR|247.93|CUBIC|43.10|
-|CUBIC|248.40|NewReno|37.16|
-|BIC|248.93|HighSpeed|36.92|
-|HighSpeed|612.90|Vegas|29.00|
+|算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|算法，按平均重传数从小到大排序|平均重传数（单位：包每秒）|
+|----|-----------------|--|-------------------|----|----|
+|YeAH|244.26|Illinois|56.19|Vegas|0.72|
+|Illinois|244.62|Hybla|52.68|NewReno|0.94|
+|H-TCP|245.72|YeAH|52.19|Hybla|3.79|
+|NewReno|246.52|Scalable|49.01|Scalable|9.91|
+|Scalable|246.78|BIC|46.95|CUBIC|13.69|
+|Hybla|247.09|H-TCP|45.56|BIC|14.81|
+|Vegas|247.61|BBR|44.88|Illinois|20.66|
+|BBR|247.93|CUBIC|43.10|HighSpeed|27.53|
+|CUBIC|248.40|NewReno|37.16|H-TCP|27.64|
+|BIC|248.93|HighSpeed|36.92|YeAH|31.45|
+|HighSpeed|612.90|Vegas|29.00|BBR|726.05|
 
 ### 4.3 网络应用测试
 
