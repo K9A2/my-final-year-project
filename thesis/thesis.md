@@ -255,6 +255,8 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 ![lan-throughput.png](./lan-throughput.png)
 
+![lan-retransmits.png](./lan-retransmits.png)
+
 |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
 |----|-----------------|--|-------------------|
 |Vegas|1.89|Scalable|89.18|
@@ -275,6 +277,8 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 
 ![wan1-throughput.png](./wan1-throughput.png)
 
+![wan1-retransmits.png](./wan1-retransmits.png)
+
 |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
 |----|-----------------|--|-------------------|
 |Scalable|30.25|H-TCP|1.02|
@@ -294,6 +298,8 @@ curl[38]是利用URL语法在命令行方式下工作的开源文件传输工具
 ![wan2-rtt.png](./wan2-rtt.png)
 
 ![wan2-throughput.png](./wan2-throughput.png)
+
+![wan2-retransmits.png](./wan2-retransmits.png)
 
 |算法，按平均RTT从小到大排序|平均RTT（单位：秒）|算法，按平均带宽从大到小排序|平均带宽（单位：Mbps）|
 |----|-----------------|--|-------------------|
