@@ -26,7 +26,7 @@ def read_text_file(file_name):
     return lines
 
 
-def process(path, exp_name, con_name, out_index, out_exp, out_con):
+def process(path, exp_name, con_name, out_index):
     exp_byte = 0
     con_byte = 0
     for i in range(1, 4):
@@ -36,12 +36,11 @@ def process(path, exp_name, con_name, out_index, out_exp, out_con):
         json_con = json.loads("".join(
             re.sub("[\n|\t]", "", "".join(read_text_file(path + str(i) +
                                                          con_name)))))
+        for j in range(len(json_exp['intervals'])):
+            exp_byte += json_exp["intervals"][j]["streams"][0]["bits_per_second"] / (1000.0 * 1000.0 * 8)
+        for j in range(len(json_con['intervals'])):
+            con_byte += json_con["intervals"][i]["streams"][0]["bits_per_second"] / (1000.0 * 1000.0 * 8)
 
-        exp_byte += json_exp["end"]["sum_sent"]["bytes"] / (1024.0 * 1024.0)
-        con_byte += json_con["end"]["sum_sent"]["bytes"] / (1024.0 * 1024.0)
-
-    out_exp.append(exp_byte / 3)
-    out_con.append(con_byte / 3)
     #     (x1 + x2)^2
     # -----------------
     # 2 * (x1^2 + x2^2)
@@ -52,18 +51,6 @@ def process(path, exp_name, con_name, out_index, out_exp, out_con):
                                                                con_byte))))
 
 
-def auto_label(ups, downs, labels, figure):
-    for i in range(len(ups)):
-        height = ups[i].get_height() + downs[i].get_height()
-        plt.text(ups[i].get_x() + ups[i].get_width() / 2.0, height + 400,
-                 "%1.2f" % labels[i],
-                 ha="center",
-                 rotation=90,
-                 fontsize=35
-                 )
-        i += 1
-
-
 def flip(items, ncol):
     return itertools.chain(*[items[i::ncol] for i in range(ncol)])
 
@@ -72,11 +59,10 @@ def main():
     """
     Main Function, nothing to comment
     """
-    scenario = "lan"
-    fsize = 52
-    label_size = 35
 
-    file_name_base = "../lab-record/result/fairness"
+    file_name_base = "./lab-record/result/fairness/"
+    scenarios = ['lan', 'wan1', 'wan2']
+    scenario = scenarios[2]
 
     algorithms = ["bbr", "scalable", "bic", "highspeed", "htcp", "hybla",
                   "illinois", "vegas", "yeah"]
@@ -85,20 +71,15 @@ def main():
 
     test_types = ["vs_reno", "vs_cubic", "vs_itself"]
 
-    vs_reno_exp = []
-    vs_reno_con = []
-
-    vs_cubic_exp = []
-    vs_cubic_con = []
-
-    vs_itself_exp = []
-    vs_itself_con = []
+    fsize = 36
     
     index_reno = []
     index_cubic = []
     index_itself = []
 
     data = []
+    
+    print 'Loadint statistics for ' + file_name_base + '/' + scenario
 
     for algorithm in algorithms:
         for test in test_types:
@@ -107,31 +88,27 @@ def main():
             if test == "vs_itself":
                 exp_name = names[algorithms.index(algorithm)] + "_1"
                 con_name = names[algorithms.index(algorithm)] + "_2"
+                print path_base + exp_name
+                print path_base + con_name
                 exp_filename = "/" + algorithm + "_1.log"
                 con_filename = "/" + algorithm + "_2.log"
-                process(path_base, exp_filename, con_filename,
-                        index_itself, vs_itself_exp, vs_itself_con)
+                process(path_base, exp_filename, con_filename, index_itself)
             if test == "vs_reno":
                 exp_name = names[algorithms.index(algorithm)]
                 con_name = "Reno"
+                print path_base + exp_name
+                print path_base + con_name
                 exp_filename = "/" + algorithm + ".log"
                 con_filename = "/reno.log"
-                process(path_base, exp_filename, con_filename,
-                        index_reno, vs_reno_exp, vs_reno_con)
+                process(path_base, exp_filename, con_filename, index_reno)
             if test == "vs_cubic":
                 con_name = "CUBIC"
                 exp_name = names[algorithms.index(algorithm)]
+                print path_base + exp_name
+                print path_base + con_name
                 exp_filename = "/" + algorithm + ".log"
                 con_filename = "/cubic.log"
-                process(path_base, exp_filename, con_filename,
-                        index_cubic, vs_cubic_exp, vs_cubic_con)
-
-    data.extend(vs_reno_exp[:])
-    data.extend(vs_reno_con[:])
-    data.extend(vs_cubic_exp[:])
-    data.extend(vs_cubic_con[:])
-    data.extend(vs_itself_exp[:])
-    data.extend(vs_itself_con[:])
+                process(path_base, exp_filename, con_filename, index_cubic)
 
     size = 9
     x = numpy.arange(size)
@@ -146,49 +123,27 @@ def main():
     # Exp
     fig = plt.figure()
 
-    exp_reno = plt.bar(x + 0 * width - 1.2,
-                       vs_reno_exp,
-                       width=width,
-                       label='Testee',
-                       alpha=0.5,
-                       color="red")
-    exp_cubic = plt.bar(x + 1 * width - 1.2,
-                        vs_cubic_exp,
-                        width=width,
-                        label='Testee',
-                        alpha=0.5,
-                        color="blue")
-    exp_itself = plt.bar(x + 2 * width - 1.2,
-                         vs_itself_exp,
-                         width=width,
-                         label='Testee',
-                         alpha=0.5,
-                         color="black")
     # Con
     con_reno = plt.bar(x + 0 * width - 1.2,
-                       vs_reno_con,
-                       bottom=vs_reno_exp,
+                       index_reno,
                        width=width,
-                       label='Reno',
+                       label='Against Reno',
                        alpha=0.5,
                        color="darkorange")
-    auto_label(con_reno, exp_reno, index_reno, fig)
+
     con_cubic = plt.bar(x + 1 * width - 1.2,
-                        vs_cubic_con,
-                        bottom=vs_cubic_exp,
+                        index_cubic,
                         width=width,
-                        label='CUBIC',
+                        label='Against CUBIC',
                         alpha=0.5,
                         color="lawngreen")
-    auto_label(con_cubic, exp_cubic, index_cubic, fig)
+
     con_itself = plt.bar(x + 2 * width - 1.2,
-                         vs_itself_con,
-                         bottom=vs_itself_exp,
+                         index_itself,
                          width=width,
-                         label='Itself',
+                         label='Against Another Same CCA',
                          alpha=0.5,
                          color="dodgerblue")
-    auto_label(con_itself, exp_itself, index_itself, fig)
 
     # Index
     plt.xticks(x + 1.5 * width - 1.2, ["BBR", "Scalable", "BIC", "High Speed",
@@ -196,16 +151,15 @@ def main():
                                        "YeAH"],
                fontsize=fsize,
                rotation="45")
-    plt.ylabel("Transferred Data(MB)", fontsize=fsize)
+    plt.ylabel("Jain`s Fairness Index", fontsize=fsize)
     plt.yticks(fontsize=fsize)
-    plt.ylim(0, numpy.max(data) * 1.5)
+    plt.ylim(0.5, 1.1)
 
     ax = plt.subplot(111)
-    handles, labels = ax.get_legend_handles_labels()
-    handles.reverse()
-    labels.reverse()
-    plt.legend(flip(handles, 3), flip(labels, 3),
-               loc="upper left", ncol=3, fontsize=label_size)
+    ax.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+              ncol=3, mode="expand", borderaxespad=0., fontsize=fsize)
+
+    plt.subplots_adjust(left=0.07, right=0.98, top=0.9, bottom=0.2)
 
     plt.show()
 
