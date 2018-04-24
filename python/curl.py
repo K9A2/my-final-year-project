@@ -22,7 +22,6 @@ def get_result_dictionary(csv, names):
         # load data for all algorithms
         for j in range(len(csv[i])):
             data[names[j]].append(float(csv[i][j]))
-
     return data
 
 
@@ -57,7 +56,7 @@ def main():
     names = ["CUBIC", "Westwood", "BBR", "Scalable", "BIC", "High Speed",
              "H-TCP", "Hybla", "Illinois", "Vegas", "YeAH", "Reno"]
 
-    scenario = file_names[1]
+    scenario = file_names[2]
     fsize = 52
     label_size = 35
 
@@ -77,7 +76,7 @@ def main():
     # plt.boxplot(x=df.values, labels=df.columns, whis=1.5)
 
     plt.yticks(fontsize=fsize)
-    plt.ylabel("Throughput (MB\s)", fontsize=fsize)
+    plt.ylabel("Throughput (Mbps)", fontsize=fsize)
 
     i = 0
     f = df.boxplot(sym='r*', patch_artist=True)
@@ -97,6 +96,9 @@ def main():
         flier.set(marker='.', markerfacecolor='r', markersize=40)
     plt.xticks(fontsize=fsize, rotation=45)
     # plt.ylim(10, 11.5)
+
+    plt.subplots_adjust(left=0.11, right=0.97, top=0.95, bottom=0.28)
+
     plt.show()
 
     return

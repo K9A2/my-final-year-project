@@ -1,0 +1,10 @@
+wlp2s0    IEEE 802.11  ESSID:"TP-LINK_5G_52B0"  
+          Mode:Managed  Frequency:5.745 GHz  Access Point: 94:D9:B3:1E:52:B2   
+          Bit Rate=300 Mb/s   Tx-Power=22 dBm   
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:on
+          Link Quality=66/70  Signal level=-44 dBm  
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:634  Invalid misc:333   Missed beacon:0
+

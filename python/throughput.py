@@ -92,12 +92,12 @@ def main():
               "deeppink", "darkviolet", "slateblue", "deepskyblue",
               "mediumturquoise", "lime"]
 
-    scenarios = ["dc1_to_lan/", "dc2_to_aliyun2/", "aliyun1_to_amazon/"]
+    scenarios = ["lan_to_dc1/", "aliyun2_to_dc2/", "amazon_to_aliyun1/"]
 
     # tests = ["test_0/", "test_1/"]
     tests = ["test_0/"]
 
-    scenario = scenarios[1]
+    scenario = scenarios[2]
 
     fsize = 52
 
@@ -140,7 +140,7 @@ def main():
     # plt.xlim(0, 3)
     plt.ylabel("Throughput(Mbps)", fontsize=fsize)
     plt.yticks(fontsize=fsize)
-    plt.ylim(1.05, 1.2)
+    # plt.ylim(1.05, 1.2)
 
     ax = plt.subplot(111)
     handles, labels = ax.get_legend_handles_labels()

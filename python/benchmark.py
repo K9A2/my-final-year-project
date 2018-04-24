@@ -59,7 +59,7 @@ def get_result_dictionary(intervals, keys):
                 intervals[i]['streams'][j]['snd_cwnd'] / 1024)
             #   Convert from bit to Mbit
             result[ID]["bits_per_second"].append(
-                intervals[i]['streams'][j]['bits_per_second'] / (1024 * 1024))
+                intervals[i]['streams'][j]['bits_per_second'] / (1000 * 1000))
             result[ID]["retransmits"].append(
                 intervals[i]['streams'][j]['retransmits'])
 
@@ -209,8 +209,7 @@ def get_statistics(result, socket_keys):
 
 def main():
     # Load and parse json object from file with specific
-    file_name = "../lab-record/result/true_topo/aliyun1_to_amazon/benchmark/" \
-        "benchmark.log"
+    file_name = "./shell/5g/tx-5mw/benchmark.log"
     doc = re.sub("[\n|\t]", "", "".join(read_text_file(file_name)))
     benchmark = json.loads("".join(doc))
 

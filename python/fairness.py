@@ -51,10 +51,6 @@ def process(path, exp_name, con_name, out_index):
                                                                con_byte))))
 
 
-def flip(items, ncol):
-    return itertools.chain(*[items[i::ncol] for i in range(ncol)])
-
-
 def main():
     """
     Main Function, nothing to comment

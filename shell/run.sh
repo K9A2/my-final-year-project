@@ -14,25 +14,21 @@
 
 #------------------------------- Code Starts -----------------------------------
 
-algorithms=("bbr" "cubic" "reno" "veno" "westwood")
+algorithms=("cubic" "reno" "bbr" "westwood" "veno")
 
 # algorithms=("bbr" "scalable" "bic" "cubic" "highspeed" "htcp" "hybla" "illinois" "vegas" "yeah" "reno")
 
-second=600
-rounds=3
+second=900
 
 # Switch algorithms and run the test
-for((i=0;i<${rounds};i++))
+for algorithm in ${algorithms[*]}
 do
-    mkdir round_${i}
-    for algorithm in ${algorithms[*]}
-    do
-        echo "-----------------------------------------------------"
-        echo $algorithm > /proc/sys/net/ipv4/tcp_congestion_control 
-        ls_date=`date  +'%Y_%m_%d_%T'`
-        echo ${ls_date}
-        echo round_${i}_${algorithm}
-        iperf3 -c 10.42.0.1 -t ${second} -V -J | tee ./round_${i}/${algorithm}.log
-        sleep 3
-    done
+    echo "-----------------------------------------------------"
+    echo $algorithm > /proc/sys/net/ipv4/tcp_congestion_control
+    ls_date=`date  +'%Y_%m_%d_%T'`
+    echo ${ls_date}
+    echo round_${i}_${algorithm}
+    iperf3 -c 192.168.1.106 -t ${second} -V -J 1> ${algorithm}.log
+    mv ${algorithm}.log round_${i}
+    sleep 3
 done
